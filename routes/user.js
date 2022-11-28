@@ -23,7 +23,7 @@ UserRouter.post("/start/sign-in", (req, res) => {
      let reply = {result: "", message: ""};
 
      // controller method.. 
-     signInUser(req.body).then((data) => {
+     UserController.signInUser(req.body).then((data) => {
 
          console.log("data", data);
 
