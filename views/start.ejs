@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+</head>
+<body>
+     <!-- include header -->
+     <%- include("./partials/header.ejs") %>
+
+     <h1>Sign in</h1>
+
+     <form action="/start/sign-in" method="post">
+        <!-- min="2" max="12" -->
+        <input type="text" name="username" id="username" placeholder="Användarnamn" required >
+        <input type="password" name="password" id="password" placeholder="Lösenord" required >
+        <input type="submit" value="Logga in">
+    </form>
+
+    <a href="/start/sign-up">Don't you have an account? Sign up!</a>
+
+
+</body>
+</html>
