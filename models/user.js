@@ -24,7 +24,8 @@ const userSchema = new Schema({
         type: String,
         required: "username must be filled in",
         minlength: 6,
-        maxlength: 12
+        maxlength: 12, 
+        unique: true
     },
     password: {
         type: String,
@@ -41,6 +42,14 @@ userSchema.pre('save', function (next) {
     }
     next();
 })
+
+userSchema.methods.matchPassword = async function(password, hashedPassword) {
+    try {
+        return await bcrypt.compare(password, hashedPassword);
+    } catch (err) {
+        throw new Error("Login failed, try again", err);
+    }
+}
 
 const UserModel = mongoose.model('User', userSchema);
 

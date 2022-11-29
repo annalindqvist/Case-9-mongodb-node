@@ -14,8 +14,12 @@ async function addUser(req, res) {
 
     let query = null;
     try {
+        const {
+            username,
+            password
+        } = req.body;
 
-        const userExists = await getUsername(req.body.username);
+        const userExists = await UserModel.findOne({username});
         if (userExists) {
 
             return query = new URLSearchParams({
@@ -25,21 +29,12 @@ async function addUser(req, res) {
 
         } else {
 
-            // collect data from body
-            const {
-                username,
-                password
-            } = req.body;
-            console.log(username, password)
-
             // create user document instance locally
             const user = new UserModel({
                 username,
                 password
             })
-            console.log("user", user)
-
-
+            
             // if no errors - save to database...
             await user.save()
             // create message that operation was successull
@@ -59,6 +54,8 @@ async function addUser(req, res) {
             message: err.message
         });
         console.error(err.message);
+        // const queryStr = query.toString();
+        // return res.redirect(`/sign-up?${queryStr}`);
     } finally {
         const queryStr = query.toString();
         res.redirect(`/?${queryStr}`);
@@ -68,42 +65,53 @@ async function addUser(req, res) {
 
 async function signInUser(req, res) {
 
+    let query = null;
+
     try {
         const {
             username,
             password
         } = req.body;
+
         //check if user exists
-        const user = await getUsername(username);
-        console.log("user", user)
+        const user = await UserModel.findOne({username});
+        
         if (!user) {
             return {
                 error: "Sign in failed"
             };
         }
-        // hash obj.password to compare with hashed password in db
-        const matchPassword = bcrypt.compareSync(password, user.password);
-        console.log("password", password)
-        console.log("user.password", user.password)
-        console.log("matchPAssword", matchPassword)
+        // match password with hashed password in db
+        const isAuth = await user.matchPassword(password, user.password);
+        console.log("isAuth", isAuth)
 
-        if (!matchPassword) {
-            return {
-                error: "Login misslyckades"
-            };
+        if (!isAuth) {
+
+            query = new URLSearchParams({
+                type: "fail",
+                message: "Failed to logged in"
+            });
+
         } else {
-            return {
-                result: "success",
-                message: "Password match",
-                user: user
-            }
+            req.session.isAuth = true;
+            req.session.userId = user._id;
+
+            query = new URLSearchParams({
+                type: "success",
+                message: "Successfully logged in!"
+            });
         }
 
     } catch (error) {
         console.error(error);
+        query = new URLSearchParams({
+            type: "fail",
+            message: err.message
+        });
     } finally {
         console.log('inloggad nu som', req.sessions)
-        res.redirect('/dashboard')
+        const queryStr = query.toString();
+        res.redirect(`/dashboard?${queryStr}`)
     }
 
 }
