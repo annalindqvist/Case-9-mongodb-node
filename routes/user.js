@@ -1,50 +1,53 @@
 import { Router } from "express";
+import { SITE_NAME } from "../configs.js";
 import UserController from "../controllers/user.js";
 
 const UserRouter = Router();
 
 // render startpage/sign-in page
-UserRouter.get("/start", (req, res) => {
-    res.render("start");
-});
+UserRouter.get("/", UserController.getSignIn);
 
-// render sign-up page
-UserRouter.get("/start/sign-up", (req, res) => {
-    res.render("sign-up");
-});
+// sign in user
+UserRouter.post("/sign-in", UserController.signInUser);
+
+// get sign-up page
+UserRouter.get("/sign-up", UserController.getSignUp);
 
 // add user to db
-UserRouter.post("/start/sign-up", UserController.addUser);
+UserRouter.post("/sign-up", UserController.addUser);
 
-UserRouter.post("/start/sign-in", (req, res) => {
-    //console.log("login..", req.body);
+// UserRouter.post("/start/sign-in", (req, res) => {
+//     //console.log("login..", req.body);
 
-     // prepare obj reply
-     let reply = {result: "", message: ""};
+//      // prepare obj reply
+//      let reply = {result: "", message: ""};
 
-     // controller method.. 
-     UserController.signInUser(req.body).then((data) => {
+//      // controller method.. 
+//      UserController.signInUser(req.body).then((data) => {
 
-         console.log("data", data);
+//          console.log("data", data);
 
-         if(data.error) {
-            reply.result = "fail";
-            reply.message= data.error;
-         } else {
-             reply.result = "success";
-             reply.message = "You signed in";
+//          if(data.error) {
+//             reply.result = "fail";
+//             reply.message= data.error;
+//          } else {
+//              reply.result = "success";
+//              reply.message = "You signed in";
 
-            //  // session
-            //  req.session.username = data.user.username;
-         }
+//             //  // session
+//             //  req.session.username = data.user.username;
+//          }
 
-     }).catch(error => {
-         console.error("error signInUser method", error);
-     }).finally(() => {
-         res.json(reply);
-     })
+//      }).catch(error => {
+//          console.error("error signInUser method", error);
+//      }).finally(() => {
+//          console.log("test")
+//          res.render('start', {site: SITE_NAME})
+         
+//      })
 
-});
+// });
+// UserRouter.post("/start/sign-in", UserController.signInUser(req.body));
 
 
 

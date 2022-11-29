@@ -19,7 +19,7 @@ if (!process.env.MONGO_CONNECTION_STR) {
 // Connect to database
 mongoose.connect(process.env.MONGO_CONNECTION_STR);
 
-const userSchema = new Schema ({
+const userSchema = new Schema({
     username: {
         type: String,
         required: "username must be filled in",
@@ -34,13 +34,13 @@ const userSchema = new Schema ({
     }
 })
 
-userSchema.pre('save', function(next) {
-    if(this.password) {                                                                                                                                                        
-        let salt = bcrypt.genSaltSync(10)                                                                                                                                     
-        this.password  = bcrypt.hashSync(this.password, salt)                                                                                                                
-    }                                                                                                                                                                          
-    next()                                                                                                                                                                 
-})                                       
+userSchema.pre('save', function (next) {
+    if (this.password) {
+        let salt = bcrypt.genSaltSync(10);
+        this.password = bcrypt.hashSync(this.password, salt);
+    }
+    next();
+})
 
 const UserModel = mongoose.model('User', userSchema);
 
