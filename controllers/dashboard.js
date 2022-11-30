@@ -2,12 +2,35 @@ import PostModel from "../models/post.js";
 import { ObjectId } from "mongodb";
 import { SITE_NAME } from "../configs.js";
 
-async function getDashboard(req, res) {
-    res.render("dashboard", {serverMessage: req.query, site: SITE_NAME});
-}
+// async function getDashboard(req, res) {
+//     res.render("dashboard", {serverMessage: req.query, site: SITE_NAME});
+// }
 
 async function getProfile(req, res) {
     res.render("profile", {serverMessage: req.query, site: SITE_NAME, user: req.session.username});
+}
+
+async function getAllPosts (req, res) {
+    let locals = {};
+
+    try {
+        const publicPosts = await PostModel.find({visibility: "public"}).populate("postedBy", "username").exec();
+        console.log("public posts", publicPosts);
+
+        const {userId} = req.session;
+        const userPosts = await PostModel.find({postedBy: Object(userId)});
+        console.log("user posts", userPosts)
+        
+        locals = {publicPosts, userPosts, site: SITE_NAME};
+        console.log(locals)
+
+    } catch (err) {
+        console.log(err)
+    }finally {
+        console.log("finally")
+        res.render("dashboard", locals);
+
+    }
 }
 
 async function addPost(req, res) {
@@ -37,7 +60,8 @@ async function addPost(req, res) {
 }
 
 export default {
-    getDashboard,
+    
     getProfile,
+    getAllPosts,
     addPost
 }
