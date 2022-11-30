@@ -10,6 +10,8 @@ UserRouter.get("/", UserController.getSignIn);
 // sign in user
 UserRouter.post("/sign-in", UserController.signInUser);
 
+UserRouter.get("/sign-out", UserController.signOutUser);
+
 // get sign-up page
 UserRouter.get("/sign-up", UserController.getSignUp);
 

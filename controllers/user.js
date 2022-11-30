@@ -10,6 +10,26 @@ async function getSignUp(req, res) {
     res.render("sign-up", {serverMessage: req.query, site: SITE_NAME});
 }
 
+async function signOutUser(req, res) {
+    let query = null;
+    try {
+        req.session.destroy();
+        query = new URLSearchParams({
+            type: "success",
+            message: "Successfully logged out!"
+        });
+    } catch (err) {
+        console.log(err)
+        query = new URLSearchParams({
+            type: "fail",
+            message: "Failed to logged out!"
+        });
+    } finally {
+        const queryStr = query.toString();
+        res.redirect(`/start?${queryStr}`);
+    }
+}
+
 async function addUser(req, res) {
 
     let query = null;
@@ -128,5 +148,6 @@ export default {
     getSignIn,
     getSignUp,
     addUser,
-    signInUser
+    signInUser,
+    signOutUser
 };
