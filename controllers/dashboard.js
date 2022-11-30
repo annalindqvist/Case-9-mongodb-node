@@ -1,3 +1,5 @@
+import PostModel from "../models/post.js";
+import { ObjectId } from "mongodb";
 import { SITE_NAME } from "../configs.js";
 
 async function getDashboard(req, res) {
@@ -5,11 +7,37 @@ async function getDashboard(req, res) {
 }
 
 async function getProfile(req, res) {
-    res.render("profile", {serverMessage: req.query, site: SITE_NAME});
+    res.render("profile", {serverMessage: req.query, site: SITE_NAME, user: req.session.username});
+}
+
+async function addPost(req, res) {
+    let query = null;
+
+    try {
+        const {post, visibility} = req.body;
+        console.log(post, visibility);
+
+        const postedBy = ObjectId(req.session.userId);
+
+        const postDoc = new PostModel({post, visibility, postedBy})
+        await postDoc.save();
+
+        query = new URLSearchParams({type: "success", message: "Successfully shared post!"});
+
+    } catch (err) {
+        console.error(err);
+        query = new URLSearchParams({type: "fail", message: err.message});
+        console.log(err.message);
+
+    }finally {
+        console.log("finally");
+        const queryStr = query.toString();
+        res.redirect(`/profile?${queryStr}`);
+    }
 }
 
 export default {
     getDashboard,
-    getProfile
+    getProfile,
+    addPost
 }
-

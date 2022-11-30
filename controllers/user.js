@@ -95,6 +95,7 @@ async function signInUser(req, res) {
         } else {
             req.session.isAuth = true;
             req.session.userId = user._id;
+            req.session.username = username;
 
             query = new URLSearchParams({
                 type: "success",

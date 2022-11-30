@@ -23,5 +23,6 @@ function checkIfAuth(req, res, next) {
 PostsRouter.use(checkIfAuth);
 PostsRouter.get("/dashboard", DashboardController.getDashboard);
 PostsRouter.get("/profile", DashboardController.getProfile);
+PostsRouter.post("/share-post", DashboardController.addPost);
 
 export default PostsRouter;
