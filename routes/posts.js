@@ -28,5 +28,7 @@ PostsRouter.get("/dashboard", DashboardController.getDashboard);
 PostsRouter.get("/profile", DashboardController.getProfile);
 PostsRouter.post("/share-post", DashboardController.addPost);
 PostsRouter.delete("/profile/:id", DashboardController.deletePost);
+PostsRouter.put("/profile/:id", DashboardController.updatePost);
+
 
 export default PostsRouter;

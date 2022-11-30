@@ -1,44 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
 </head>
+
 <body>
-     <!-- include header -->
-     <%- include("./partials/header.ejs") %>
+    <!-- include header -->
+    <%- include("./partials/header.ejs") %>
 
-     <h1>Profile</h1>
+    <h1>Profile</h1>
 
-     <%- include("./partials/share-post.ejs") %>
-    
-    
- 
+    <%- include("./partials/share-post.ejs") %>
+    <%- include("./partials/update-post.ejs") %>
+
+
+
     <ul>
         <% for(let i = 0; i < userPosts.length; i++) { %>
         <li>
-          <b><%= userPosts[i].post %></b>
-          <small>, posted by you</small>
-          <i><%= userPosts[i].visibility %></i>
-          <button onclick="handleDelete('<%=userPosts[i]._id%>')">delete</button>
+            <b><%= userPosts[i].post %></b>
+            <small>, posted by you</small>
+            <i><%= userPosts[i].visibility %></i>
+            <button
+                onclick="handleUpdate('<%= userPosts[i]._id %>', '<%= userPosts[i].post %>',  '<%= userPosts[i].visibility %>')">edit</button>
+            <button onclick="handleDelete('<%=userPosts[i]._id%>')">delete</button>
         </li>
         <% } %>
-      </ul>
-   
+    </ul>
 
-      <script>
-          function handleDelete(id) {
-              fetch(`/profile/${id}`, {method: "DELETE"})
-              .then((res) => {
-                  if (res.redirected) {
-                      window.location.href = res.url;
-                  }
-              })
-              .catch((err) => console.log(err));
-          }
-      </script>
+
+    <script>
+        function handleDelete(id) {
+            fetch(`/profile/${id}`, {
+                    method: "DELETE"
+                })
+                .then((res) => {
+                    if (res.redirected) {
+                        window.location.href = res.url;
+                    }
+                })
+                .catch((err) => console.log(err));
+        }
+
+        function handleUpdate(id, post, visibility) {
+
+            const updatePostForm = document.getElementById("update-form");
+            updatePostForm.hidden = false;
+
+            updatePostForm.elements.post.value = post;
+            updatePostForm.elements.visibility.value = visibility;
+
+            updatePostForm.onsubmit = (e) => {
+                e.preventDefault();
+
+                const updatedPost = updatePostForm.elements.post.value;
+                const updatedVisibility = updatePostForm.elements.visibility.value;
+
+               
+
+                fetch(`/profile/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            post: updatedPost,
+                            visibility: updatedVisibility
+                        }),
+                    })
+                    .then((res) => {
+                        if (res.redirected) {
+                            
+                            window.location.href = res.url;
+                        }
+                    })
+                    .catch((err) => console.log(err));
+            }
+        }
+    </script>
 
 </body>
+
 </html>

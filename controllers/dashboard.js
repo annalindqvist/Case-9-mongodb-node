@@ -1,6 +1,7 @@
 import PostModel from "../models/post.js";
 import { ObjectId } from "mongodb";
 import { SITE_NAME } from "../configs.js";
+import { checkServerIdentity } from "tls";
 
 
 
@@ -87,14 +88,38 @@ async function deletePost (req, res) {
         
 
     } catch (err) {
-        console.log(err);
+        console.error(err);
         query = new URLSearchParams({type: "fail", message: err.message});
     } finally {
         console.log("finally");
         const queryStr = query.toString();
         res.redirect(`/profile?${queryStr}`);
     }
-    
+}
+
+async function updatePost(req, res) {
+    let query = null;
+
+    try {
+
+        const {id} = req.params;
+        const {post, visibility} = req.body;
+        
+        await PostModel.updateOne(
+            {_id: ObjectId(id)},
+            {post, visibility}
+        )
+        query = new URLSearchParams({type: "success", message: "Successfully updated post!"});
+
+        
+    } catch (err) {
+        console.error(err);
+        query = new URLSearchParams({type: "fail", message: err.message});
+    } finally {
+        console.log("finally");
+        const queryStr = query.toString();
+        res.redirect(`/profile?${queryStr}`);
+    }
 }
 
 export default {
@@ -102,5 +127,6 @@ export default {
     getProfile,
     getDashboard,
     addPost,
-    deletePost
+    deletePost,
+    updatePost
 }
