@@ -22,11 +22,23 @@
           <b><%= userPosts[i].post %></b>
           <small>, posted by you</small>
           <i><%= userPosts[i].visibility %></i>
+          <button onclick="handleDelete('<%=userPosts[i]._id%>')">delete</button>
         </li>
         <% } %>
       </ul>
    
 
+      <script>
+          function handleDelete(id) {
+              fetch(`/profile/${id}`, {method: "DELETE"})
+              .then((res) => {
+                  if (res.redirected) {
+                      window.location.href = res.url;
+                  }
+              })
+              .catch((err) => console.log(err));
+          }
+      </script>
 
 </body>
 </html>

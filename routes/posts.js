@@ -1,7 +1,7 @@
 import { Router } from "express";
+
 import UserController from "../controllers/user.js";
 import DashboardController from "../controllers/dashboard.js";
-
 
 
 const PostsRouter = Router();
@@ -20,9 +20,13 @@ function checkIfAuth(req, res, next) {
     }
 }
 
+// if not auth (logged in) you dont access posts
 PostsRouter.use(checkIfAuth);
+
 PostsRouter.get("/dashboard", DashboardController.getDashboard);
+// all concerning profile in one controlleR???? not DashboardController..
 PostsRouter.get("/profile", DashboardController.getProfile);
 PostsRouter.post("/share-post", DashboardController.addPost);
+PostsRouter.delete("/profile/:id", DashboardController.deletePost);
 
 export default PostsRouter;

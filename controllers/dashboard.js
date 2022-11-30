@@ -17,12 +17,12 @@ async function getProfile(req, res) {
 
     } catch (err) {
         console.log(err)
+
     }finally {
         console.log("finally")
         res.render("profile", locals);
 
     }
-    
 }
 
 async function getDashboard (req, res) {
@@ -70,9 +70,37 @@ async function addPost(req, res) {
     }
 }
 
+async function deletePost (req, res) {
+    let query = null;
+
+    try {
+
+        const {id} = req.params;
+        console.log(id)
+
+        const deletedPost = await PostModel.deleteOne({_id: id})
+        if (deletedPost.deletedCount == 0){
+            query = new URLSearchParams({type: "fail", message: "No post deleted"});
+        } else {
+            query = new URLSearchParams({type: "success", message: "Successfully deleted post!"});
+        }
+        
+
+    } catch (err) {
+        console.log(err);
+        query = new URLSearchParams({type: "fail", message: err.message});
+    } finally {
+        console.log("finally");
+        const queryStr = query.toString();
+        res.redirect(`/profile?${queryStr}`);
+    }
+    
+}
+
 export default {
     
     getProfile,
     getDashboard,
-    addPost
+    addPost,
+    deletePost
 }
