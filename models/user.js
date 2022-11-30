@@ -20,11 +20,17 @@ if (!process.env.MONGO_CONNECTION_STR) {
 mongoose.connect(process.env.MONGO_CONNECTION_STR);
 
 const userSchema = new Schema({
+    name: {
+        type: String,
+        required: "name must be filled in",
+        minlength: 1,
+        maxlength: 15, 
+    },
     username: {
         type: String,
         required: "username must be filled in",
-        minlength: 6,
-        maxlength: 12, 
+        minlength: 5,
+        maxlength: 15, 
         unique: true
     },
     password: {

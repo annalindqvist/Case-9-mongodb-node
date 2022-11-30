@@ -35,10 +35,14 @@ async function addUser(req, res) {
     let query = null;
     try {
         const {
+            name,
             username,
-            password
+            email,
+            password,
+            passwordAgain
         } = req.body;
 
+        console.log(name, username, email, password, passwordAgain)
         const userExists = await UserModel.findOne({username});
         if (userExists) {
 
@@ -51,6 +55,7 @@ async function addUser(req, res) {
 
             // create user document instance locally
             const user = new UserModel({
+                name,
                 username,
                 password
             })
