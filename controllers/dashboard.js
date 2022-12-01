@@ -8,10 +8,10 @@ async function getProfile(req, res) {
     try {
         const {userId} = req.session;
         const userPosts = await PostModel.find({postedBy: Object(userId)});
-        console.log("user posts", userPosts)
+        //console.log("user posts", userPosts)
         
         locals = {userPosts, site: SITE_NAME, user: req.session.username};
-        console.log(locals)
+        //console.log(locals)
 
     } catch (err) {
         console.log(err)
@@ -27,11 +27,15 @@ async function getDashboard (req, res) {
     let locals = {};
 
     try {
-        const publicPosts = await PostModel.find({visibility: "public"}).populate("postedBy", "username").exec();
+        const publicPosts = await PostModel.find({visibility: "public"})
+        .populate("postedBy", "username")
+        .exec();
+
         console.log("public posts", publicPosts);
+       // console.log("reqsession", req.session)
 
         locals = {publicPosts, site: SITE_NAME};
-        console.log(locals)
+        //console.log(locals)
 
     } catch (err) {
         console.log(err)
@@ -50,10 +54,12 @@ async function addPost(req, res) {
         console.log(post, visibility);
 
         const postedBy = ObjectId(req.session.userId);
+        const name = req.session.name;
 
-        const postDoc = new PostModel({post, visibility, postedBy})
+        const postDoc = new PostModel({post, visibility, name, postedBy})
         await postDoc.save();
 
+        console.log(postDoc)
         query = new URLSearchParams({type: "success", message: "Successfully shared post!"});
 
     } catch (err) {

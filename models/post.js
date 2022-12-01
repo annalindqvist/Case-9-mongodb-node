@@ -30,6 +30,11 @@ const postSchema = new Schema({
         enum: ["public", "private"],
         default: "public"
     },
+    name: {
+        type: String,
+        minlength: 1,
+        maxlength: 15, 
+    },
     postedBy: {
         type: mongoose.Schema.ObjectId,
         ref: "User"

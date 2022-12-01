@@ -57,6 +57,7 @@ async function addUser(req, res) {
             const user = new UserModel({
                 name,
                 username,
+                email,
                 password
             })
             
@@ -121,6 +122,7 @@ async function signInUser(req, res) {
             req.session.isAuth = true;
             req.session.userId = user._id;
             req.session.username = username;
+            req.session.name = user.name;
 
             query = new URLSearchParams({
                 type: "success",

@@ -19,7 +19,8 @@
        <% for(let i = 0; i < publicPosts.length; i++) { %>
        <li>
          <b><%= publicPosts[i].post %></b>
-         <small>, posted by <%= publicPosts[i]?.postedBy?.username || "Unknown" %></small>
+         <small>, posted by <%= publicPosts[i].name || "Unknown" %></small>
+         <small>@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></small>
        </li>
        <% } %>
      </ul>
