@@ -1,13 +1,20 @@
 import UserModel from "../models/user.js";
 import bcrypt from "bcrypt";
-import { SITE_NAME } from "../configs.js";
+import {
+    SITE_NAME
+} from "../configs.js";
 
 async function getSignIn(req, res) {
-    res.render("start", {serverMessage: req.query});
+    res.render("start", {
+        serverMessage: req.query
+    });
 }
 
 async function getSignUp(req, res) {
-    res.render("sign-up", {serverMessage: req.query, site: SITE_NAME});
+    res.render("sign-up", {
+        serverMessage: req.query,
+        site: SITE_NAME
+    });
 }
 
 async function signOutUser(req, res) {
@@ -33,6 +40,7 @@ async function signOutUser(req, res) {
 async function addUser(req, res) {
 
     let query = null;
+    let url = 'login';
     try {
         const {
             name,
@@ -43,9 +51,11 @@ async function addUser(req, res) {
         } = req.body;
 
         console.log(name, username, email, password, passwordAgain)
-        const userExists = await UserModel.findOne({username});
+        const userExists = await UserModel.findOne({
+            username
+        });
         if (userExists) {
-
+            url = 'sign-up';
             return query = new URLSearchParams({
                 type: "error",
                 message: "Username already taken"
@@ -53,24 +63,29 @@ async function addUser(req, res) {
 
         } else {
 
-            // create user document instance locally
-            const user = new UserModel({
-                name,
-                username,
-                email,
-                password
-            })
-            
-            // if no errors - save to database...
-            await user.save()
-            // create message that operation was successull
+            if (password !== passwordAgain) {
+                url = 'sign-up';
+                throw new Error("Passwords doesn't match");
+            } else {
 
-            query = new URLSearchParams({
-                type: "success",
-                message: "Successfully added user!"
-            });
+                // create user document instance locally
+                const user = new UserModel({
+                    name,
+                    username,
+                    email,
+                    password
+                })
+
+                // if no errors - save to database...
+                await user.save()
+                // create message that operation was successull
+
+                query = new URLSearchParams({
+                    type: "success",
+                    message: "Successfully added user!"
+                });
+            }
         }
-
 
     } catch (err) {
         // create unsuccessfull message
@@ -79,12 +94,13 @@ async function addUser(req, res) {
             type: "fail",
             message: err.message
         });
+        url = 'sign-up';
         console.error(err.message);
         // const queryStr = query.toString();
         // return res.redirect(`/sign-up?${queryStr}`);
     } finally {
         const queryStr = query.toString();
-        res.redirect(`/?${queryStr}`);
+        res.redirect(`/${url}?${queryStr}`);
     }
 
 }
@@ -100,13 +116,17 @@ async function signInUser(req, res) {
         } = req.body;
 
         //check if user exists
-        const user = await UserModel.findOne({username});
-        
+        const user = await UserModel.findOne({
+            username
+        });
+
         if (!user) {
-            return {
-                error: "Sign in failed"
-            };
+            return query = new URLSearchParams({
+                    type: "fail",
+                    message: "Failed to logged in"
+                });
         }
+
         // match password with hashed password in db
         const isAuth = await user.matchPassword(password, user.password);
         console.log("isAuth", isAuth)
@@ -137,19 +157,19 @@ async function signInUser(req, res) {
             message: err.message
         });
     } finally {
-        console.log('inloggad nu som', req.sessions)
+        //console.log('inloggad nu som', req.sessions)
         const queryStr = query.toString();
-        res.redirect(`/dashboard?${queryStr}`)
+        res.redirect(`/dashboard?${queryStr}`);
     }
 
 }
 
 
-async function getUsername(username) {
-    return await UserModel.findOne({
-        username: username
-    });
-};
+// async function getUsername(username) {
+//     return await UserModel.findOne({
+//         username: username
+//     });
+// };
 
 export default {
     getSignIn,
