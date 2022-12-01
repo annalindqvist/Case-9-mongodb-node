@@ -33,6 +33,12 @@ const userSchema = new Schema({
         maxlength: 15, 
         unique: true
     },
+    email: {
+        type: String,
+        required: "email must be filled in",
+        unique: true,
+        match: [/\S+@\S+\.\S+/, "is invalid"],
+    },
     password: {
         type: String,
         required: "password must be filled in",

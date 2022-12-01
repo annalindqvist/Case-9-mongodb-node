@@ -1,9 +1,6 @@
 import PostModel from "../models/post.js";
 import { ObjectId } from "mongodb";
 import { SITE_NAME } from "../configs.js";
-import { checkServerIdentity } from "tls";
-
-
 
 async function getProfile(req, res) {
     let locals = {};
@@ -86,7 +83,6 @@ async function deletePost (req, res) {
             query = new URLSearchParams({type: "success", message: "Successfully deleted post!"});
         }
         
-
     } catch (err) {
         console.error(err);
         query = new URLSearchParams({type: "fail", message: err.message});

@@ -17,8 +17,6 @@
     <%- include("./partials/share-post.ejs") %>
     <%- include("./partials/update-post.ejs") %>
 
-
-
     <ul>
         <% for(let i = 0; i < userPosts.length; i++) { %>
         <li>
@@ -31,7 +29,6 @@
         </li>
         <% } %>
     </ul>
-
 
     <script>
         function handleDelete(id) {
@@ -59,8 +56,6 @@
 
                 const updatedPost = updatePostForm.elements.post.value;
                 const updatedVisibility = updatePostForm.elements.visibility.value;
-
-               
 
                 fetch(`/profile/${id}`, {
                         method: "PUT",
