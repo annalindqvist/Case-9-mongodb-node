@@ -33,6 +33,9 @@ async function getDashboard (req, res) {
         .populate("postedBy", "username")
         .exec();
 
+        
+
+        console.log(publicPosts)
         locals = {publicPosts, site: SITE_NAME};
         //console.log(locals)
 
@@ -126,17 +129,18 @@ async function updatePost(req, res) {
 async function addComment(req, res) {
 
     try {
-        console.log(req.body)
-        console.log(req.session.username)
+        // console.log(req.body)
+        // console.log(req.session.username)
         const { comment } = req.body;
-
+        const { id } = req.params;
         const postedBy = req.session.userId;
 
-        const commentDoc = new CommentModel({comment, postedBy})
+        const commentDoc = new CommentModel({comment, postedBy, post: id});
         await commentDoc.save();
 
+        await PostModel.findOneAndUpdate({_id: ObjectId(id)}, {$push: {"comments": commentDoc}});
 
-
+    
 
     }catch (err){
         console.log(err);
