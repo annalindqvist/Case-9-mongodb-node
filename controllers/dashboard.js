@@ -17,7 +17,6 @@ async function getProfile(req, res) {
         console.log(err)
 
     }finally {
-        console.log("finally")
         res.render("profile", locals);
 
     }
@@ -30,9 +29,6 @@ async function getDashboard (req, res) {
         const publicPosts = await PostModel.find({visibility: "public"})
         .populate("postedBy", "username")
         .exec();
-
-        //console.log("public posts", publicPosts);
-       // console.log("reqsession", req.session)
 
         locals = {publicPosts, site: SITE_NAME};
         //console.log(locals)
@@ -47,7 +43,7 @@ async function getDashboard (req, res) {
 }
 
 async function addPost(req, res) {
-    let query = null;
+    
 
     try {
         const {post, visibility} = req.body;
@@ -60,22 +56,22 @@ async function addPost(req, res) {
         await postDoc.save();
 
         //console.log(postDoc)
-        query = new URLSearchParams({type: "success", message: "Successfully shared post!"});
+        req.flash('sucess', 'Successfully shared post!');
 
     } catch (err) {
-        console.error(err);
-        query = new URLSearchParams({type: "fail", message: err.message});
-        //console.log(err.message);
+      
+        req.flash('error', err.message);
+       
 
     }finally {
         //console.log("finally");
-        const queryStr = query.toString();
-        res.redirect(`/profile?${queryStr}`);
+        
+        res.redirect('/profile');
     }
 }
 
 async function deletePost (req, res) {
-    let query = null;
+   
 
     try {
 
@@ -84,18 +80,20 @@ async function deletePost (req, res) {
 
         const deletedPost = await PostModel.deleteOne({_id: id})
         if (deletedPost.deletedCount == 0){
-            query = new URLSearchParams({type: "fail", message: "No post deleted"});
+            throw new Error('No post deleted');
         } else {
-            query = new URLSearchParams({type: "success", message: "Successfully deleted post!"});
+            req.flash('sucess', 'Successfully deleted post!');
         }
         
     } catch (err) {
         console.error(err);
-        query = new URLSearchParams({type: "fail", message: err.message});
+
+        req.flash('error', err.message);
     } finally {
         //console.log("finally");
-        const queryStr = query.toString();
-        res.redirect(`/profile?${queryStr}`);
+        console.log(req.session)
+       
+        res.redirect('/profile');
     }
 }
 
@@ -121,9 +119,7 @@ async function updatePost(req, res) {
         console.log("finally");
         const queryStr = query.toString();
 
-        const messages = await req.consumeFlash('testing flash');
-
-        res.redirect(`/profile?${queryStr}`, {messages});
+        res.redirect(`/profile?${queryStr}`);
     }
 }
 

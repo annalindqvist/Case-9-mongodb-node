@@ -4,9 +4,6 @@ import {
 } from "../configs.js";
 
 
-
-
-
 async function getSignIn(req, res) {
     res.render("start", {
         serverMessage: req.query
@@ -21,29 +18,27 @@ async function getSignUp(req, res) {
 }
 
 async function signOutUser(req, res) {
-    let query = null;
+    
     try {
+        // FLASH FUNKAR INTE, but why?
+        req.flash('error', 'Successfully logged out!')
         req.session.destroy();
-        query = new URLSearchParams({
-            type: "success",
-            message: "Successfully logged out!"
-        });
+        
     } catch (err) {
         console.log(err)
-        query = new URLSearchParams({
-            type: "fail",
-            message: "Failed to logged out!"
-        });
+        // FLASH FUNKAR INTE, but why?
+        req.flash('error', 'Failed to logged out')
+        
     } finally {
-        const queryStr = query.toString();
-        res.redirect(`/start?${queryStr}`);
+        
+        res.redirect('/start');
     }
 }
 
 async function addUser(req, res) {
 
-    //let query = null;
-    let url = 'login';
+    // default endpoint is sign-in page/login/startpage if no erore occurs then stay on sign-up page
+    let url = '';
     try {
         const {
             name,
@@ -57,20 +52,20 @@ async function addUser(req, res) {
         const userExists = await UserModel.findOne({
             username
         });
+
+        // if username is alreasy taken therow error
         if (userExists) {
             url = 'sign-up';
-            //req.flash('error', 'username is already taken')
             throw new Error('username is already taken');
 
         } else {
-
+            // if password-fields doesnt match theow error
             if (password !== passwordAgain) {
                 url = 'sign-up';
-                //req.flash('error', 'Passwords doesnt match');
                 throw new Error("Passwords doesn't match");
             } else {
 
-                // create user document instance locally
+                // create user document instance locally - should it be named userDoc ? in db it says document..?
                 const user = new UserModel({
                     name,
                     username,
@@ -78,44 +73,29 @@ async function addUser(req, res) {
                     password
                 })
 
-                // if no errors - save to database...
+                // save to database
                 await user.save()
                 
-                // create message that operation was successull
-                req.flash('sucess', 'Successfully added user');
-                // query = new URLSearchParams({
-                //     type: "success",
-                //     message: "Successfully added user!"
-                // });
+                // create flash message - successull
+                req.flash('success', 'Successfully added user');
             }
         }
 
     } catch (err) {
-        // create unsuccessfull message
+        // create unsuccessfull flash message
         req.flash('error', err.message);
-        // query = new URLSearchParams({
-        //     type: "fail",
-        //     message: err.message
-        // });
+        // if error occurs - stay on sign-up page
         url = 'sign-up';
-        console.error(err.message);
-        // const queryStr = query.toString();
-        // return res.redirect(`/sign-up?${queryStr}`);
     } finally {
-
-        
-        
-        // const queryStr = query.toString();
-        //res.redirect(`/${url}?${queryStr}`);
         res.redirect(`/${url}`);
-        console.log(req.session)
     }
 
 }
 
 async function signInUser(req, res) {
 
-    let query = null;
+    // end destination should be dashboard if no errors occcurs
+    let url = 'dashboard';
 
     try {
         const {
@@ -123,61 +103,45 @@ async function signInUser(req, res) {
             password
         } = req.body;
 
-        //check if user exists
+        //check if user exists in db
         const user = await UserModel.findOne({
             username
         });
 
         if (!user) {
-            return query = new URLSearchParams({
-                    type: "fail",
-                    message: "Failed to logged in"
-                });
+            url = '';
+            throw new Error('Please try again');
         }
 
-        // match password with hashed password in db
+        // match password from form with hashed password in db
         const isAuth = await user.matchPassword(password, user.password);
-        console.log("isAuth", isAuth)
 
+        // if password doesnt match - throw error, stay on sign-up page/start page/log inpage
         if (!isAuth) {
-
-            query = new URLSearchParams({
-                type: "fail",
-                message: "Failed to logged in"
-            });
+            url = '';
+            throw new Error('Please try again');
 
         } else {
+            // if user exists and password matches save in req.session
             req.session.isAuth = true;
             req.session.userId = user._id;
             req.session.username = username;
             req.session.name = user.name;
-
-            query = new URLSearchParams({
-                type: "success",
-                message: "Successfully logged in!"
-            });
+            // create success flash message - shows on dashboard when signed in!
+            req.flash('success', 'Successfully signed in')
         }
 
-    } catch (error) {
-        console.error(error);
-        query = new URLSearchParams({
-            type: "fail",
-            message: err.message
-        });
+    } catch (err) {
+        // if error - create flash message 
+        req.flash('Error', err.message)
+        url = '';
     } finally {
-        //console.log('inloggad nu som', req.sessions)
-        const queryStr = query.toString();
-        res.redirect(`/dashboard?${queryStr}`);
+        // redirect to url that has been declared - if no errors / dashboard,  if errors /sign-in
+        res.redirect(`/${url}`);
     }
 
 }
 
-
-// async function getUsername(username) {
-//     return await UserModel.findOne({
-//         username: username
-//     });
-// };
 
 export default {
     getSignIn,

@@ -17,10 +17,11 @@
     <%- include("./partials/share-post.ejs") %>
     <%- include("./partials/update-post.ejs") %>
 
-    <% if (messages) { %>
-        <% for( let index = 0; index < messages.length; index++ ) { %>
-            <% messages[i] %> 
-        <% } %>
+    <% if (locals.flash) { %>
+        <% Object.keys(flash).forEach((key) => { %> <%
+            flash[key].forEach((message) => { %>
+            <p class="<%= key %>"><%= message %></p>
+            <% }) %> <% }) %>
     <% } %>
    
 

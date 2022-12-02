@@ -12,8 +12,15 @@
 
      <h1>Sign in</h1>
 
+     <% if (locals.flash) { %>
+        <% Object.keys(flash).forEach((key) => { %> <%
+            flash[key].forEach((message) => { %>
+            <p class="<%= key %>"><%= message %></p>
+            <% }) %> <% }) %>
+    <% } %>
+
      <form action="/sign-in" method="post">
-        <!-- min="2" max="12" -->
+       
         <input type="text" name="username" id="username" placeholder="Användarnamn" required >
         <input type="password" name="password" id="password" placeholder="Lösenord" required >
         <input type="submit" value="Logga in">
