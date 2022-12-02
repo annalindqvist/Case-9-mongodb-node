@@ -1,6 +1,6 @@
 import express from 'express';
 import session from 'express-session';
-
+import flash  from 'connect-flash';
 import { config, SITE_NAME, PORT, SESSION_SECRET, SESSION_MAXAGE } from "./configs.js";
 import UserRouter from './routes/user.js';
 import PostsRouter from './routes/posts.js'
@@ -23,6 +23,7 @@ app.use(
 );
 
 
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -36,12 +37,19 @@ function checkSession(req, res, next) {
 // use checkSession middleware everywhere
 app.use(checkSession);
 
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.flash = req.flash();
 
+    next();
+})
 
 
 app.get('/', function (req, res) {
     res.render('start', {site: SITE_NAME});
 });
+
+
 
 app.use(UserRouter);
 app.use(PostsRouter);

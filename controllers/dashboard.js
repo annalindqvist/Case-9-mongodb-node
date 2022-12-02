@@ -31,7 +31,7 @@ async function getDashboard (req, res) {
         .populate("postedBy", "username")
         .exec();
 
-        console.log("public posts", publicPosts);
+        //console.log("public posts", publicPosts);
        // console.log("reqsession", req.session)
 
         locals = {publicPosts, site: SITE_NAME};
@@ -40,7 +40,7 @@ async function getDashboard (req, res) {
     } catch (err) {
         console.log(err)
     }finally {
-        console.log("finally")
+        //console.log("finally")
         res.render("dashboard", locals);
 
     }
@@ -51,7 +51,7 @@ async function addPost(req, res) {
 
     try {
         const {post, visibility} = req.body;
-        console.log(post, visibility);
+        //console.log(post, visibility);
 
         const postedBy = ObjectId(req.session.userId);
         const name = req.session.name;
@@ -59,16 +59,16 @@ async function addPost(req, res) {
         const postDoc = new PostModel({post, visibility, name, postedBy})
         await postDoc.save();
 
-        console.log(postDoc)
+        //console.log(postDoc)
         query = new URLSearchParams({type: "success", message: "Successfully shared post!"});
 
     } catch (err) {
         console.error(err);
         query = new URLSearchParams({type: "fail", message: err.message});
-        console.log(err.message);
+        //console.log(err.message);
 
     }finally {
-        console.log("finally");
+        //console.log("finally");
         const queryStr = query.toString();
         res.redirect(`/profile?${queryStr}`);
     }
@@ -80,7 +80,7 @@ async function deletePost (req, res) {
     try {
 
         const {id} = req.params;
-        console.log(id)
+        //console.log(id)
 
         const deletedPost = await PostModel.deleteOne({_id: id})
         if (deletedPost.deletedCount == 0){
@@ -93,7 +93,7 @@ async function deletePost (req, res) {
         console.error(err);
         query = new URLSearchParams({type: "fail", message: err.message});
     } finally {
-        console.log("finally");
+        //console.log("finally");
         const queryStr = query.toString();
         res.redirect(`/profile?${queryStr}`);
     }
@@ -120,7 +120,10 @@ async function updatePost(req, res) {
     } finally {
         console.log("finally");
         const queryStr = query.toString();
-        res.redirect(`/profile?${queryStr}`);
+
+        const messages = await req.consumeFlash('testing flash');
+
+        res.redirect(`/profile?${queryStr}`, {messages});
     }
 }
 

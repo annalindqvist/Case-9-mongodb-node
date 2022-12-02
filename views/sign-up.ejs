@@ -12,6 +12,13 @@
 
      <h1>Sign up</h1>
 
+      <% if (locals.flash) { %>
+        <% Object.keys(flash).forEach((key) => { %> <%
+            flash[key].forEach((message) => { %>
+            <p class="<%= key %>"><%= message %></p>
+            <% }) %> <% }) %>
+    <% } %>
+
      <form action="/sign-up" method="post">
         <!-- min="2" max="12" -->
         <input type="text" name="name" id="name" placeholder="name" min="1" max="15" required>

@@ -17,6 +17,13 @@
     <%- include("./partials/share-post.ejs") %>
     <%- include("./partials/update-post.ejs") %>
 
+    <% if (messages) { %>
+        <% for( let index = 0; index < messages.length; index++ ) { %>
+            <% messages[i] %> 
+        <% } %>
+    <% } %>
+   
+
     <ul>
         <% for(let i = 0; i < userPosts.length; i++) { %>
         <li>

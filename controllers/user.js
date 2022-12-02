@@ -1,8 +1,11 @@
 import UserModel from "../models/user.js";
-import bcrypt from "bcrypt";
 import {
     SITE_NAME
 } from "../configs.js";
+
+
+
+
 
 async function getSignIn(req, res) {
     res.render("start", {
@@ -13,7 +16,7 @@ async function getSignIn(req, res) {
 async function getSignUp(req, res) {
     res.render("sign-up", {
         serverMessage: req.query,
-        site: SITE_NAME
+        site: SITE_NAME,
     });
 }
 
@@ -39,7 +42,7 @@ async function signOutUser(req, res) {
 
 async function addUser(req, res) {
 
-    let query = null;
+    //let query = null;
     let url = 'login';
     try {
         const {
@@ -56,15 +59,14 @@ async function addUser(req, res) {
         });
         if (userExists) {
             url = 'sign-up';
-            return query = new URLSearchParams({
-                type: "error",
-                message: "Username already taken"
-            });
+            //req.flash('error', 'username is already taken')
+            throw new Error('username is already taken');
 
         } else {
 
             if (password !== passwordAgain) {
                 url = 'sign-up';
+                //req.flash('error', 'Passwords doesnt match');
                 throw new Error("Passwords doesn't match");
             } else {
 
@@ -78,29 +80,35 @@ async function addUser(req, res) {
 
                 // if no errors - save to database...
                 await user.save()
+                
                 // create message that operation was successull
-
-                query = new URLSearchParams({
-                    type: "success",
-                    message: "Successfully added user!"
-                });
+                req.flash('sucess', 'Successfully added user');
+                // query = new URLSearchParams({
+                //     type: "success",
+                //     message: "Successfully added user!"
+                // });
             }
         }
 
     } catch (err) {
         // create unsuccessfull message
-
-        query = new URLSearchParams({
-            type: "fail",
-            message: err.message
-        });
+        req.flash('error', err.message);
+        // query = new URLSearchParams({
+        //     type: "fail",
+        //     message: err.message
+        // });
         url = 'sign-up';
         console.error(err.message);
         // const queryStr = query.toString();
         // return res.redirect(`/sign-up?${queryStr}`);
     } finally {
-        const queryStr = query.toString();
-        res.redirect(`/${url}?${queryStr}`);
+
+        
+        
+        // const queryStr = query.toString();
+        //res.redirect(`/${url}?${queryStr}`);
+        res.redirect(`/${url}`);
+        console.log(req.session)
     }
 
 }
