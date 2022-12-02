@@ -1,41 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
 </head>
+
 <body>
-     <!-- include header -->
-     <%- include("./partials/header.ejs") %>
+    <!-- include header -->
+    <%- include("./partials/header.ejs") %>
 
-     <h1>Dashboard</h1>
+    <h1>Dashboard</h1>
 
-     <% if (locals.flash) { %>
-        <% Object.keys(flash).forEach((key) => { %> <%
+    <% if (locals.flash) { %>
+    <% Object.keys(flash).forEach((key) => { %> <%
             flash[key].forEach((message) => { %>
-            <p class="<%= key %>"><%= message %></p>
-            <% }) %> <% }) %>
+    <p class="<%= key %>"><%= message %></p>
+    <% }) %> <% }) %>
     <% } %>
 
-     <a href="/profile">Profile</a>
-    
-     
-     <ul>
-       <% for(let i = 0; i < publicPosts.length; i++) { %>
-       <li>
-         <b><%= publicPosts[i].post %></b>
-         <small>, posted by <%= publicPosts[i].name || "Unknown" %></small>
-         <small>@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></small>
-       </li>
-       <% } %>
-     </ul>
-    
- 
+    <a href="/profile">Profile</a>
+
+
+    <ul>
+        <% for(let i = 0; i < publicPosts.length; i++) { %>
+        <li>
+            <b><%= publicPosts[i].post %></b>
+            <small>, posted by <%= publicPosts[i].name || "Unknown" %></small>
+            <small>@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></small>
+            <%- include("./partials/comment.ejs") %>
+            <button onclick="handleComment('<%= publicPosts[i]._id %>')">comment</button>
+        </li>
+        <% } %>
+    </ul>
 
    
 
 
+    <script>
+
+        function handleComment(id) {
+
+            const commentForm = document.getElementById("comment-form");
+            commentForm.hidden = false;
+
+            console.log("handleComment", id)
+
+            // commentForm.elements.comment.value = comment;
+
+            commentForm.onsubmit = (e) => {
+                e.preventDefault();
+
+                const comment = commentForm.elements.comment.value;
+                //console.log(comment)
+
+                fetch(`/dashboard/${id}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            comment: comment
+                        }),
+                    })
+                    .then((res) => {
+                        if (res.redirected) {
+
+                            window.location.href = res.url;
+                        }
+                    })
+                    .catch((err) => console.log(err));
+            }
+        }
+
+    </script>
+
+
 </body>
+
 </html>

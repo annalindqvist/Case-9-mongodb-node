@@ -1,4 +1,5 @@
 import PostModel from "../models/post.js";
+import CommentModel from "../models/comment.js";
 import { ObjectId } from "mongodb";
 import { SITE_NAME } from "../configs.js";
 
@@ -17,10 +18,12 @@ async function getProfile(req, res) {
         console.log(err)
 
     }finally {
+        console.log("kom även till getProfile")
         res.render("profile", locals);
 
     }
 }
+
 
 async function getDashboard (req, res) {
     let locals = {};
@@ -70,38 +73,38 @@ async function addPost(req, res) {
     }
 }
 
+// flashmessage doesnt show because getProfile function also runs - there is two redirects so the flashmessage disapers!
+// but why doesn't it happen when adding a new post.....?
 async function deletePost (req, res) {
-   
 
     try {
-
         const {id} = req.params;
         //console.log(id)
 
         const deletedPost = await PostModel.deleteOne({_id: id})
         if (deletedPost.deletedCount == 0){
             throw new Error('No post deleted');
-        } else {
-            req.flash('sucess', 'Successfully deleted post!');
-        }
+        } 
+        req.flash('sucess', 'Successfully deleted post!');
+        console.log("console efter flash")
         
+            
     } catch (err) {
         console.error(err);
 
         req.flash('error', err.message);
     } finally {
         //console.log("finally");
-        console.log(req.session)
+        //console.log(req.session)
        
         res.redirect('/profile');
     }
 }
 
+// same here as deletePost - two redirects so flashmessage disapers.. 
 async function updatePost(req, res) {
-    let query = null;
 
     try {
-
         const {id} = req.params;
         const {post, visibility} = req.body;
         
@@ -109,17 +112,37 @@ async function updatePost(req, res) {
             {_id: ObjectId(id)},
             {post, visibility}
         )
-        query = new URLSearchParams({type: "success", message: "Successfully updated post!"});
-
+        req.flash('sucess', 'Successfully updated post!'); 
         
     } catch (err) {
-        console.error(err);
-        query = new URLSearchParams({type: "fail", message: err.message});
-    } finally {
-        console.log("finally");
-        const queryStr = query.toString();
 
-        res.redirect(`/profile?${queryStr}`);
+        req.flash('error', 'Someting went wrong');
+    } finally {
+
+        res.redirect('/profile');
+    }
+}
+
+async function addComment(req, res) {
+
+    try {
+        console.log(req.body)
+        console.log(req.session.username)
+        const { comment } = req.body;
+
+        const postedBy = req.session.userId;
+
+        const commentDoc = new CommentModel({comment, postedBy})
+        await commentDoc.save();
+
+
+
+
+    }catch (err){
+        console.log(err);
+    }
+    finally {
+        console.log("finally");
     }
 }
 
@@ -129,5 +152,6 @@ export default {
     getDashboard,
     addPost,
     deletePost,
-    updatePost
+    updatePost,
+    addComment
 }
