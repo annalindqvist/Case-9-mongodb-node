@@ -232,32 +232,78 @@ async function likePost(req, res) {
         } = req.params;
         const likedBy = req.session.userId;
 
-        // create commentDocument and go through commentSchema
-        const likeDoc = new LikeModel({
-            like: true,
-            likedBy,
-            post: id
-        });
-        console.log("likeDoc", likeDoc)
-        // save comment do db - ... yes or no? 
-        await likeDoc.save();
+        const findPost = await PostModel.find({
+            "_id": id
+        })
+        .populate("likes")
+        .exec()
 
-        // push to post-comment-array ... yes or no?
-        await PostModel.findOneAndUpdate({
-            _id: ObjectId(id)
-        }, {
-            $push: {
-                "likes": likeDoc._id
-            }
-        });
+        
+        console.log("likedby", likedBy)
+        const alreadyLike = findPost[0].likes.some(like => like.likedBy == likedBy);
+        // works sometimes, not always, why?
+        console.log("alreadyLike", alreadyLike);
 
-    } catch (err) {
-        console.log(err);
-    } finally {
-        console.log("finally - likePost")
-        // const backURL = req.header('Referer') || '/';
-        // res.redirect(backURL);
-    }
+        if (alreadyLike) {
+            // TODO. Delete from likes-collection aswell.. how to? 
+            // const deletedLike = await LikeModel.deleteOne({
+            //     _id: likedBy
+            // })
+            PostModel.updateOne({
+                    _id: ObjectId(id)
+                }, {
+                    $inc: {
+                        'likeCount': -1
+                    },
+                    $pull: {
+                        'likes': {
+                            _id: id
+                        }
+                    }
+                },
+                err => {
+                    if (err) {
+                        console.log(err)
+                    }
+                    console.log("dislike")
+                });
+        } else {
+            
+            const likeDoc = new LikeModel({
+                like: true,
+                likedBy,
+                post: id
+            });
+            likeDoc.save();
+            
+            PostModel.updateOne({
+                _id: ObjectId(id)
+            }, {
+                $inc: {
+                    'likeCount': 1
+                },
+                $push: {
+                    'likes': {
+                        _id: likeDoc._id
+                    }
+                }
+            },
+            err => {
+                if (err) {
+                    console.log(err)
+                }
+            });
+            console.log("like")
+        }
+    
+}
+catch (err) {
+    console.log(err);
+} finally {
+    console.log("finally - likePost")
+    // const backURL = req.header('Referer') || '/';
+    // res.redirect(backURL);
+}
 }
 
 export default {

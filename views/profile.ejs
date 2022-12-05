@@ -32,8 +32,20 @@
             <small>, posted by you</small>
             <i><%= userPosts[i].visibility %></i>
             <div>
+                <%  userPosts[i].likes.forEach(like => { %>
+                <div>
+                    <h4>LIKES</h4>
+                    <p> <%=  "Failed to display likes" %> </p>
+                    <p> <%= like.likedBy.username || "Unknown" %> </p>
+                    <p> <%= like.createdAt || "00:00" %> </p>
+                </div>
+                <%  }); %>
+
+            </div>
+            <div>
                 <%  userPosts[i].comments.forEach(comment => { %>
                 <div>
+                    <h4>COMMENTS</h4>
                     <p> <%= comment.comment || "Failed to display comment" %> </p>
                     <p> <%= comment.postedBy.username || "Unknown" %> </p>
                     <p> <%= comment.createdAt || "00:00" %> </p>

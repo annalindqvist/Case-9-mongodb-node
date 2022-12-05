@@ -31,6 +31,7 @@
             <b><%= publicPosts[i].post %></b>
             <small>, posted by <%= publicPosts[i].name || "Unknown" %></small>
             <small>@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></small>
+           
             <div>
                 <%  publicPosts[i].comments.forEach(comment => { %>
                 <div>
