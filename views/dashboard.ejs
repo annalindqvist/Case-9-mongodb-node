@@ -24,23 +24,35 @@
     <a href="/profile">Profile</a>
 
 
+
     <ul>
         <% for(let i = 0; i < publicPosts.length; i++) { %>
         <li>
             <b><%= publicPosts[i].post %></b>
             <small>, posted by <%= publicPosts[i].name || "Unknown" %></small>
             <small>@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></small>
-            <%- include("./partials/comment.ejs") %>
+            <div>
+                <%  publicPosts[i].comments.forEach(comment => { %>
+                <div>
+                    <p> <%= comment.comment %> </p>
+                    <p> <%= comment.postedBy.username %> </p>
+                    <p> <%= comment.createdAt %> </p>
+                </div>
+                <%  }); %>
+
+
+
+            </div>
+            <div><%- include("./partials/comment.ejs") %></div>
             <button onclick="handleComment('<%= publicPosts[i]._id %>')">comment</button>
         </li>
         <% } %>
     </ul>
 
-   
+
 
 
     <script>
-
         function handleComment(id) {
 
             const commentForm = document.getElementById("comment-form");
@@ -74,7 +86,6 @@
                     .catch((err) => console.log(err));
             }
         }
-
     </script>
 
 

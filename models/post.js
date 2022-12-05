@@ -39,7 +39,7 @@ const postSchema = new Schema({
         type: mongoose.Schema.ObjectId,
         ref: "User"
     },
-    comment:[
+    comments:[
         {
             type: mongoose.Schema.Types.ObjectId, 
             ref: 'Comment'

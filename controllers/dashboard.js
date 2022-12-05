@@ -30,14 +30,21 @@ async function getDashboard (req, res) {
 
     try {
         const publicPosts = await PostModel.find({visibility: "public"})
-        .populate("postedBy", "username")
+        .populate([{path: "postedBy", select: "username"}, {path: "comments", populate: {
+            path: 'postedBy',
+            model: 'User'
+          }}])
         .exec();
 
+        //[{path: "postedBy", select: "username"}, {path: "comments"}
         
-
-        console.log(publicPosts)
+        // publicPosts.comments.forEach(comment => {
+        //     console.log(comment.postedBy, comment.comment, comment)
+        // });
+          console.log(publicPosts[7])
+        //console.log("publicPost[7]", publicPosts[7].comments[0].postedBy.username)
         locals = {publicPosts, site: SITE_NAME};
-        //console.log(locals)
+
 
     } catch (err) {
         console.log(err)
@@ -61,6 +68,7 @@ async function addPost(req, res) {
         const postDoc = new PostModel({post, visibility, name, postedBy})
         await postDoc.save();
 
+
         //console.log(postDoc)
         req.flash('sucess', 'Successfully shared post!');
 
@@ -83,6 +91,8 @@ async function deletePost (req, res) {
     try {
         const {id} = req.params;
         //console.log(id)
+
+        // check if user who posted this is same as the one trying to delete post samt with edit and add..?
 
         const deletedPost = await PostModel.deleteOne({_id: id})
         if (deletedPost.deletedCount == 0){
@@ -129,23 +139,28 @@ async function updatePost(req, res) {
 async function addComment(req, res) {
 
     try {
-        // console.log(req.body)
-        // console.log(req.session.username)
+        
+        // get comment, post-id and who posted comment
         const { comment } = req.body;
         const { id } = req.params;
         const postedBy = req.session.userId;
 
+        // create commentDocument and go through commentSchema
         const commentDoc = new CommentModel({comment, postedBy, post: id});
+        // save comment do db - ... yes or no? 
         await commentDoc.save();
 
-        await PostModel.findOneAndUpdate({_id: ObjectId(id)}, {$push: {"comments": commentDoc}});
+        
 
-    
+        // push to post-comment-array ... yes or no?
+        await PostModel.findOneAndUpdate({_id: ObjectId(id)}, {$push: {"comments": commentDoc._id}});
 
     }catch (err){
+
         console.log(err);
     }
     finally {
+        
         console.log("finally");
     }
 }
