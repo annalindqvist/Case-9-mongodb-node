@@ -8,7 +8,12 @@ async function getProfile(req, res) {
 
     try {
         const {userId} = req.session;
-        const userPosts = await PostModel.find({postedBy: Object(userId)});
+        const userPosts = await PostModel.find({postedBy: Object(userId)})
+        .populate({path: "comments", populate: {
+            path: 'postedBy',
+            model: 'User'
+          }})
+        .exec();
         //console.log("user posts", userPosts)
         
         locals = {userPosts, site: SITE_NAME, user: req.session.username};
@@ -104,12 +109,9 @@ async function deletePost (req, res) {
             
     } catch (err) {
         console.error(err);
-
         req.flash('error', err.message);
     } finally {
-        //console.log("finally");
-        //console.log(req.session)
-       
+
         res.redirect('/profile');
     }
 }
@@ -136,10 +138,10 @@ async function updatePost(req, res) {
     }
 }
 
+// flash-message when added comment! do i need it?!
 async function addComment(req, res) {
 
     try {
-        
         // get comment, post-id and who posted comment
         const { comment } = req.body;
         const { id } = req.params;
@@ -149,19 +151,17 @@ async function addComment(req, res) {
         const commentDoc = new CommentModel({comment, postedBy, post: id});
         // save comment do db - ... yes or no? 
         await commentDoc.save();
-
         
-
+        console.log("req.params", req.route)
         // push to post-comment-array ... yes or no?
         await PostModel.findOneAndUpdate({_id: ObjectId(id)}, {$push: {"comments": commentDoc._id}});
 
     }catch (err){
-
         console.log(err);
     }
     finally {
-        
-        console.log("finally");
+        const backURL = req.header('Referer') || '/';
+        res.redirect(backURL);
     }
 }
 

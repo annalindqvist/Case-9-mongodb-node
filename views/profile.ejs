@@ -31,6 +31,16 @@
             <b><%= userPosts[i].post %></b>
             <small>, posted by you</small>
             <i><%= userPosts[i].visibility %></i>
+            <div>
+                <%  userPosts[i].comments.forEach(comment => { %>
+                <div>
+                    <p> <%= comment.comment || "Failed to display comment" %> </p>
+                    <p> <%= comment.postedBy.username || "Unknown" %> </p>
+                    <p> <%= comment.createdAt || "00:00" %> </p>
+                </div>
+                <%  }); %>
+
+            </div>
             <button
                 onclick="handleUpdate('<%= userPosts[i]._id %>', '<%= userPosts[i].post %>',  '<%= userPosts[i].visibility %>')">edit</button>
             <button onclick="handleDelete('<%=userPosts[i]._id%>')">delete</button>

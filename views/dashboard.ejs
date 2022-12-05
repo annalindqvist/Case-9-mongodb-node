@@ -34,13 +34,11 @@
             <div>
                 <%  publicPosts[i].comments.forEach(comment => { %>
                 <div>
-                    <p> <%= comment.comment %> </p>
-                    <p> <%= comment.postedBy.username %> </p>
-                    <p> <%= comment.createdAt %> </p>
+                    <p> <%= comment.comment || "Failed to display comment" %> </p>
+                    <p> <%= comment.postedBy.username || "Unknown" %> </p>
+                    <p> <%= comment.createdAt || "00:00" %> </p>
                 </div>
                 <%  }); %>
-
-
 
             </div>
             <div><%- include("./partials/comment.ejs") %></div>
