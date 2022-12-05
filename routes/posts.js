@@ -30,7 +30,9 @@ PostsRouter.post("/share-post", DashboardController.addPost);
 PostsRouter.delete("/profile/:id", DashboardController.deletePost);
 PostsRouter.put("/profile/:id", DashboardController.updatePost);
 
-PostsRouter.post("/dashboard/:id", DashboardController.addComment);
+PostsRouter.post("/dashboard/comment/:id", DashboardController.addComment);
+PostsRouter.post("/dashboard/like/:id", DashboardController.likePost);
+
 
 
 export default PostsRouter;

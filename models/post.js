@@ -33,21 +33,27 @@ const postSchema = new Schema({
     name: {
         type: String,
         minlength: 1,
-        maxlength: 15, 
+        maxlength: 15,
     },
     postedBy: {
         type: mongoose.Schema.ObjectId,
         ref: "User"
     },
-    comments:[
+    comments: [
         {
-            type: mongoose.Schema.Types.ObjectId, 
-            ref: 'Comment'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }
+],
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Like'
         }
     ]
-},{
+}, {
     timestamps: true
-    
+
 })
 
 const PostModel = mongoose.model('Post', postSchema);

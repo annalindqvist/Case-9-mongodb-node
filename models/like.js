@@ -18,26 +18,24 @@ if (!process.env.MONGO_CONNECTION_STR) {
 // Connect to database
 mongoose.connect(process.env.MONGO_CONNECTION_STR);
 
-const commentSchema = new Schema({
-    comment: {
-        type: String,
-        required: "comment must be filled in",
-        minlength: 1,
-        maxlength: 1000,
+const likeSchema = new Schema({
+    like: {
+        type: Boolean,
+        default: false,
     },
-    postedBy: {
+    likedBy: {
         type: mongoose.Schema.ObjectId,
         ref: "User"
     },
     post: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
-    },
+    }
 }, {
     timestamps: true
 })
 
 
-const CommentModel = mongoose.model('Comment', commentSchema);
+const LikeModel = mongoose.model('Like', likeSchema);
 
-export default CommentModel;
+export default LikeModel;
