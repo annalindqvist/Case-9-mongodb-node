@@ -224,7 +224,6 @@ async function addComment(req, res) {
 
 async function likePost(req, res) {
     console.log("likepost funktion")
-
     try {
         // get comment, post-id and who posted comment
         const {
@@ -233,50 +232,60 @@ async function likePost(req, res) {
         const likedBy = req.session.userId;
 
         const findPost = await PostModel.find({
-            "_id": id
-        })
-        .populate("likes")
-        .exec()
+                "_id": id
+            })
+            .populate("likes")
+            .exec()
 
-        
         console.log("likedby", likedBy)
         const alreadyLike = findPost[0].likes.some(like => like.likedBy == likedBy);
         // works sometimes, not always, why?
         console.log("alreadyLike", alreadyLike);
 
+
+
+
+
         if (alreadyLike) {
             // TODO. Delete from likes-collection aswell.. how to? 
-            // const deletedLike = await LikeModel.deleteOne({
-            //     _id: likedBy
-            // })
-            PostModel.updateOne({
+
+            const findLikeId = findPost[0].likes.map(id => id._id);
+            const likeId = findLikeId[0];
+            console.log("findpodt[0]...", likeId);
+
+            const dislike = await LikeModel.deleteOne({
+                _id: likeId,
+            });
+
+            if (dislike.deletedCount == 0) {
+                console.log("deleted like = 0", dislike)
+
+            } else {
+
+                await PostModel.updateOne({
                     _id: ObjectId(id)
                 }, {
                     $inc: {
-                        'likeCount': -1
+                        'likeCount': 0 ? 0 : -1
                     },
                     $pull: {
-                        'likes': {
-                            _id: id
-                        }
+                        'likes': likeId
                     }
-                },
-                err => {
-                    if (err) {
-                        console.log(err)
-                    }
-                    console.log("dislike")
                 });
+                console.log("disliked post")
+            }
+
+
         } else {
-            
+
             const likeDoc = new LikeModel({
                 like: true,
                 likedBy,
                 post: id
             });
-            likeDoc.save();
-            
-            PostModel.updateOne({
+            await likeDoc.save();
+
+            await PostModel.updateOne({
                 _id: ObjectId(id)
             }, {
                 $inc: {
@@ -287,23 +296,17 @@ async function likePost(req, res) {
                         _id: likeDoc._id
                     }
                 }
-            },
-            err => {
-                if (err) {
-                    console.log(err)
-                }
             });
-            console.log("like")
+            console.log("like post")
         }
-    
-}
-catch (err) {
-    console.log(err);
-} finally {
-    console.log("finally - likePost")
-    // const backURL = req.header('Referer') || '/';
-    // res.redirect(backURL);
-}
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        console.log("finally - likePost")
+        // const backURL = req.header('Referer') || '/';
+        // res.redirect(backURL);
+    }
 }
 
 export default {
