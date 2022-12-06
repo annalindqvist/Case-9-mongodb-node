@@ -15,18 +15,26 @@ body {
     width: 100vw;
 }
 
+#comment-form {
+    display: none;
+}
+
+.grey {
+    color: #D6D6D6;
+}
+
 p,
 label,
 a {
     font-size: 12px;
     font-weight: normal;
-   
+
 }
 
 a {
     color: #FAF6F5;
     text-decoration: none;
-   
+
 }
 
 h1 {
@@ -45,7 +53,20 @@ button {
     border-radius: 50px;
     padding: 1rem 0 1rem 0;
     color: #FAF6F5;
-    
+
+}
+
+ion-icon {
+    color: #FF5454;
+    width: 20px;
+    height: 20px;
+    /* background: linear-gradient(90deg, #C15CFF -0.77%, #C15CFF -0.76%, #FF5454 100.77%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+}
+
+li {
+    list-style-type: none;
 }
 
 .centeredContent {
@@ -58,6 +79,7 @@ button {
 .logoSignIn {
     margin-bottom: 2rem;
 }
+
 form {
     display: flex;
     flex-direction: column;
@@ -79,15 +101,16 @@ input {
 
 #tAndCCont {
     display: flex;
-    
+
     align-items: center;
     margin-bottom: 2rem;
-    
+
 }
+
 #tAndCCont input {
-    margin-bottom:  0;
+    margin-bottom: 0;
     margin-right: 0.5rem;
-    
+
 }
 
 .linkDiv {
@@ -97,15 +120,56 @@ input {
 
 /* DASHBOARD */
 
-.postContainer {
-    border: 1px solid #FF5454;
-    
+/* .postContainer div {
+    margin-bottom: 1rem;
+} */
+
+.postContent, .likesAndComment {
+    margin-top: 0.5rem;
+}
+.postedByInfo {
+    display: flex;
+    align-items: center;
 
 }
+
+.profilePic {
+    border-radius: 50%;
+    background-color: #FF5454;
+    width: 30px;
+    height: 30px;
+}
+
+.postedBy {
+    margin-left: 0.5rem;
+}
+
 .postedByName {
     font-weight: 600;
 }
-
-.postLikes {
+.postLikeIcon {
     display: flex;
+    align-items: center;
+}
+
+
+.postLikeCount {
+    margin-left: 0.2rem;
+}
+.postCommentIcon {
+    margin-left: 0.5rem;
+}
+
+.postComments {
+    
+    margin-left: 0.8rem;
+}
+.comment {
+    margin-top: 0.3rem;
+}
+.displayFlex {
+    display: flex;
+}
+.commentPostedBy .postedByUsername {
+    margin-left: 0.2rem;
 }

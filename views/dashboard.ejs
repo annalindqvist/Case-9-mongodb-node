@@ -29,34 +29,51 @@
     <ul>
         <% for(let i = 0; i < publicPosts.length; i++) { %>
         <li class="postContainer">
-            <div>
-                <p class="postedByName"> <%= publicPosts[i].name || "Unknown" %></p>
-                <p class="postedByUsername">@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></p>
+            <div class="postedByInfo">
+                <div class="profilePic"></div>
+                <div class="postedBy">
+                    <p class="postedByName"> <%= publicPosts[i].name || "Unknown" %></p>
+                    <p class="postedByUsername grey">@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></p>
+                </div>
             </div>
             <div>
                 <p class="postContent"><%= publicPosts[i].post %></p>
             </div>
 
-            <div class="postLikes">
-                <ion-icon name="heart-outline"></ion-icon> 
-                <% if (publicPosts[i].likeCount >= 1) { %>
-                <p><%= publicPosts[i].likeCount || "" %> </p>
-                <% } %>
+            <div class="likesAndComment displayFlex">
+
+                <div class="postLikeIcon displayFlex">
+                    <ion-icon name="heart-outline" onclick="handleLike('<%= publicPosts[i]._id %>')"></ion-icon>
+                    <% if (publicPosts[i].likeCount >= 1) { %>
+                    <p class="postLikeCount"><%= publicPosts[i].likeCount || "" %> </p>
+                    <% } %>
+                </div>
+                <div class="postCommentIcon displayFlex">
+                    <ion-icon name="chatbubble-outline"></ion-icon>
+                </div>
+
             </div>
-           
-               
-            <div>
+            <div class="postComments">
+
                 <%  publicPosts[i].comments.forEach(comment => { %>
-                <div>
-                    <h4>COMMENTS</h4>
-                    <p> <%= comment.comment || "Failed to display comment" %> </p>
-                    <p> <%= comment.postedBy.username || "Unknown" %> </p>
-                    <p> <%= comment.createdAt || "00:00" %> </p>
+                <div class="comment">
+                    <div class="commentPostedBy displayFlex">
+                        <p class="postedByName"> <%= comment.postedBy.name || "Unknown" %> </p>
+                        <p class="postedByUsername grey"> @<%= comment.postedBy.username || "Unknown" %> </p>
+                    </div>
+                    <div class="commentContent">
+                        <p> <%= comment.comment || "Failed to display comment" %> </p>
+                    </div>
+                    <div class="commentCreatedAt grey">
+                        <p> <%= comment.createdAt || "00:00" %> </p>
+                    </div>
+
+
                 </div>
                 <%  }); %>
             </div>
             <div><%- include("./partials/comment.ejs") %></div>
-            <button onclick="handleLike('<%= publicPosts[i]._id %>')">like</button>
+           
             <button onclick="handleComment('<%= publicPosts[i]._id %>')">comment</button>
         </li>
         <% } %>

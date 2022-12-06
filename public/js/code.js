@@ -48,7 +48,7 @@ function handleUpdate(id, post, visibility) {
 function handleComment(id) {
 
     const commentForm = document.getElementById("comment-form");
-    commentForm.hidden = false;
+    commentForm.style.display = "flex";
 
     commentForm.onsubmit = (e) => {
         e.preventDefault();
