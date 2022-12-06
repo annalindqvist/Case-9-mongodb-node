@@ -266,7 +266,7 @@ async function likePost(req, res) {
                     _id: ObjectId(id)
                 }, {
                     $inc: {
-                        'likeCount': 0 ? 0 : -1
+                        'likeCount': -1
                     },
                     $pull: {
                         'likes': likeId
@@ -274,7 +274,6 @@ async function likePost(req, res) {
                 });
                 console.log("disliked post")
             }
-
 
         } else {
 
@@ -303,9 +302,9 @@ async function likePost(req, res) {
     } catch (err) {
         console.log(err);
     } finally {
-        console.log("finally - likePost")
-        // const backURL = req.header('Referer') || '/';
-        // res.redirect(backURL);
+        //console.log("finally - likePost")
+        const backURL = req.header('Referer') || '/';
+        res.redirect(backURL);
     }
 }
 

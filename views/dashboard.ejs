@@ -31,10 +31,17 @@
             <b><%= publicPosts[i].post %></b>
             <small>, posted by <%= publicPosts[i].name || "Unknown" %></small>
             <small>@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></small>
+
+            <div>
+                <h4>LIKES <%= publicPosts[i].likeCount || "" %></h4>
+              
+
+            </div>
            
             <div>
                 <%  publicPosts[i].comments.forEach(comment => { %>
                 <div>
+                    <h4>COMMENTS</h4>
                     <p> <%= comment.comment || "Failed to display comment" %> </p>
                     <p> <%= comment.postedBy.username || "Unknown" %> </p>
                     <p> <%= comment.createdAt || "00:00" %> </p>
