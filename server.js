@@ -10,6 +10,7 @@ const app = express();
 
 app.set('view engine', 'ejs')
 
+
 // sessions
 // ========================================
 
@@ -21,8 +22,6 @@ app.use(
         cookie: { maxAge: SESSION_MAXAGE },
     })
 );
-
-
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -49,7 +48,7 @@ app.get('/', function (req, res) {
     res.render('start', {site: SITE_NAME});
 });
 
-
+app.use(express.static('public'));
 
 app.use(UserRouter);
 app.use(PostsRouter);

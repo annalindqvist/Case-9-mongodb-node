@@ -74,7 +74,8 @@ async function getDashboard(req, res) {
             .exec();
 
         // console.log(publicPosts[7])
-        //console.log("publicPost[7]", publicPosts[7].comments[0].postedBy.username)
+        //console.log("publicPost[7]", publicPosts[7].comments[0]);
+
         locals = {
             publicPosts,
             site: SITE_NAME
@@ -302,7 +303,6 @@ async function likePost(req, res) {
     } catch (err) {
         console.log(err);
     } finally {
-        //console.log("finally - likePost")
         const backURL = req.header('Referer') || '/';
         res.redirect(backURL);
     }

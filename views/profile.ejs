@@ -24,7 +24,6 @@
             <% }) %> <% }) %>
     <% } %>
    
-
     <ul>
         <% for(let i = 0; i < userPosts.length; i++) { %>
         <li>
@@ -33,7 +32,6 @@
             <i><%= userPosts[i].visibility %></i>
             <div>
                 <h4>LIKES <%= userPosts[i].likeCount || "" %></h4>
-               
             </div>
             <div>
                 <%  userPosts[i].comments.forEach(comment => { %>

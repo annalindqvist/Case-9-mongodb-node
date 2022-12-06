@@ -23,21 +23,15 @@
 
     <a href="/profile">Profile</a>
 
-
-
     <ul>
         <% for(let i = 0; i < publicPosts.length; i++) { %>
         <li>
             <b><%= publicPosts[i].post %></b>
             <small>, posted by <%= publicPosts[i].name || "Unknown" %></small>
             <small>@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></small>
-
             <div>
                 <h4>LIKES <%= publicPosts[i].likeCount || "" %></h4>
-              
-
             </div>
-           
             <div>
                 <%  publicPosts[i].comments.forEach(comment => { %>
                 <div>
@@ -47,7 +41,6 @@
                     <p> <%= comment.createdAt || "00:00" %> </p>
                 </div>
                 <%  }); %>
-
             </div>
             <div><%- include("./partials/comment.ejs") %></div>
             <button onclick="handleLike('<%= publicPosts[i]._id %>')">like</button>
