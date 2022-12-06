@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <title>Dashboard</title>
 </head>
 
@@ -18,12 +21,12 @@
     <%- include("./partials/update-post.ejs") %>
 
     <% if (locals.flash) { %>
-        <% Object.keys(flash).forEach((key) => { %> <%
+    <% Object.keys(flash).forEach((key) => { %> <%
             flash[key].forEach((message) => { %>
-            <p class="<%= key %>"><%= message %></p>
-            <% }) %> <% }) %>
+    <p class="<%= key %>"><%= message %></p>
+    <% }) %> <% }) %>
     <% } %>
-   
+
     <ul>
         <% for(let i = 0; i < userPosts.length; i++) { %>
         <li>
@@ -51,53 +54,7 @@
         <% } %>
     </ul>
 
-    <script>
-        function handleDelete(id) {
-            fetch(`/profile/${id}`, {
-                    method: "DELETE"
-                })
-                .then((res) => {
-                    if (res.redirected) {
-                        window.location.href = res.url;
-                    }
-                })
-                .catch((err) => console.log(err));
-        }
-
-        function handleUpdate(id, post, visibility) {
-
-            const updatePostForm = document.getElementById("update-form");
-            updatePostForm.hidden = false;
-
-            updatePostForm.elements.post.value = post;
-            updatePostForm.elements.visibility.value = visibility;
-
-            updatePostForm.onsubmit = (e) => {
-                e.preventDefault();
-
-                const updatedPost = updatePostForm.elements.post.value;
-                const updatedVisibility = updatePostForm.elements.visibility.value;
-
-                fetch(`/profile/${id}`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            post: updatedPost,
-                            visibility: updatedVisibility
-                        }),
-                    })
-                    .then((res) => {
-                        if (res.redirected) {
-                            
-                            window.location.href = res.url;
-                        }
-                    })
-                    .catch((err) => console.log(err));
-            }
-        }
-    </script>
+    <script src="/js/code.js"></script>
 
 </body>
 

@@ -1,41 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
     <title>Sign in</title>
 </head>
+
 <body>
-     <!-- include header -->
-     <%- include("./partials/header.ejs") %>
+    <!-- include header -->
+    <div class="logo">
+        <h1>TWETA</h1>
+    </div>
+    
 
-     <h1>Sign up</h1>
+    <main class="centeredContent">
 
-      <% if (locals.flash) { %>
+
+        <% if (locals.flash) { %>
         <% Object.keys(flash).forEach((key) => { %> <%
             flash[key].forEach((message) => { %>
-            <p class="<%= key %>"><%= message %></p>
-            <% }) %> <% }) %>
-    <% } %>
+        <p class="<%= key %>"><%= message %></p>
+        <% }) %> <% }) %>
+        <% } %>
 
-     <form action="/sign-up" method="post">
-        <!-- min="2" max="12" -->
-        <input type="text" name="name" id="name" placeholder="name" min="1" max="15" required>
-        <input type="text" name="username" id="username" placeholder="username" min="6" max="15" required>
-        <input type="email" name="email" id="email" placeholder="email">
-        <input type="password" name="password" id="password" placeholder="password" min="8" max="24" required>
-        <input type="password" name="passwordAgain" id="passwordAgain" placeholder="password again" min="8" max="24" required>
+        <form action="/sign-up" method="post">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" min="1" max="15" required>
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" min="6" max="15" required>
+            <label for="email">E-mail</label>
+            <input type="email" name="email" id="email">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" min="8" max="24" required>
+            <label for="passwordAgain">Confirm password</label>
+            <input type="password" name="passwordAgain" id="passwordAgain" min="8" max="24" required>
 
+            <div id="tAndCCont">
+                <input type="checkbox" name="tAndC" id="tAndC" required>
+                <p>I have read and I agree on terms and contidions.</p>
+            </div>
 
-        <input type="submit" value="Sign up">
-    </form>
+            <button type="submit">SIGN UP</button>
 
-    <a href="/start">Go back</a>
+        </form>
+        <div class="linkDiv">
+            <a href="/start">Go back</a>
+        </div>
 
-
-    <script>
-
-    </script>
+    </main>
 </body>
+
 </html>

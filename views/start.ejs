@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,28 +8,37 @@
     <link rel="stylesheet" href="styles/main.css">
     <title>Sign in</title>
 </head>
+
 <body>
-     <!-- include header -->
-     <%- include("./partials/header.ejs") %>
+    <!-- include header -->
 
-     <h1>Sign in</h1>
+    <main class="centeredContent">
 
-     <% if (locals.flash) { %>
+        <div class="logoSignIn">
+            <h1>TWETA</h1>
+        </div>
+        
+
+        <% if (locals.flash) { %>
         <% Object.keys(flash).forEach((key) => { %> <%
             flash[key].forEach((message) => { %>
-            <p class="<%= key %>"><%= message %></p>
-            <% }) %> <% }) %>
-    <% } %>
+        <p class="<%= key %>"><%= message %></p>
+        <% }) %> <% }) %>
+        <% } %>
 
-     <form action="/sign-in" method="post">
-       
-        <input type="text" name="username" id="username" placeholder="Användarnamn" required >
-        <input type="password" name="password" id="password" placeholder="Lösenord" required >
-        <input type="submit" value="Logga in">
-    </form>
-
-    <a href="/sign-up">Don't you have an account? Sign up!</a>
-
+        <form action="/sign-in" method="post">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+            <button type="submit">SIGN IN</button>
+        </form>
+        <div class="linkDiv">
+            <a href="/sign-up">Don't you have an account? Sign up!</a>
+        </div>
+        
+    </main>
 
 </body>
+
 </html>

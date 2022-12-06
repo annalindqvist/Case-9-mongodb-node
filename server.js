@@ -48,7 +48,7 @@ app.get('/', function (req, res) {
     res.render('start', {site: SITE_NAME});
 });
 
-app.use(express.static('public'));
+app.use(express.static('./public'));
 
 app.use(UserRouter);
 app.use(PostsRouter);

@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <title>Dashboard</title>
 </head>
 
@@ -25,13 +28,23 @@
 
     <ul>
         <% for(let i = 0; i < publicPosts.length; i++) { %>
-        <li>
-            <b><%= publicPosts[i].post %></b>
-            <small>, posted by <%= publicPosts[i].name || "Unknown" %></small>
-            <small>@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></small>
+        <li class="postContainer">
             <div>
-                <h4>LIKES <%= publicPosts[i].likeCount || "" %></h4>
+                <p class="postedByName"> <%= publicPosts[i].name || "Unknown" %></p>
+                <p class="postedByUsername">@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></p>
             </div>
+            <div>
+                <p class="postContent"><%= publicPosts[i].post %></p>
+            </div>
+
+            <div class="postLikes">
+                <ion-icon name="heart-outline"></ion-icon> 
+                <% if (publicPosts[i].likeCount >= 1) { %>
+                <p><%= publicPosts[i].likeCount || "" %> </p>
+                <% } %>
+            </div>
+           
+               
             <div>
                 <%  publicPosts[i].comments.forEach(comment => { %>
                 <div>
@@ -49,62 +62,7 @@
         <% } %>
     </ul>
 
-
-
-
-    <script>
-        function handleComment(id) {
-
-            const commentForm = document.getElementById("comment-form");
-            commentForm.hidden = false;
-
-            console.log("handleComment", id)
-
-            // commentForm.elements.comment.value = comment;
-
-            commentForm.onsubmit = (e) => {
-                e.preventDefault();
-
-                const comment = commentForm.elements.comment.value;
-                //console.log(comment)
-
-                fetch(`/dashboard/comment/${id}`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            comment: comment
-                        }),
-                    })
-                    .then((res) => {
-                        if (res.redirected) {
-
-                            window.location.href = res.url;
-                        }
-                    })
-                    .catch((err) => console.log(err));
-            }
-        }
-
-        function handleLike(id) {
-            console.log("handleLike", id)
-
-            fetch(`/dashboard/like/${id}`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    })
-                    .then((res) => {
-                        if (res.redirected) {
-                            window.location.href = res.url;
-                        }
-                    })
-                    .catch((err) => console.log(err));
-        }
-    </script>
-
+    <script src="/js/code.js"></script>
 
 </body>
 
