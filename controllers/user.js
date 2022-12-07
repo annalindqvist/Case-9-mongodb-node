@@ -21,7 +21,7 @@ async function signOutUser(req, res) {
     
     try {
         // FLASH FUNKAR INTE, but why?
-        req.flash('error', 'Successfully logged out!')
+        req.flash('success', 'Successfully logged out!')
         req.session.destroy();
         
     } catch (err) {

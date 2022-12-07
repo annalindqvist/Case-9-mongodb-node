@@ -26,9 +26,9 @@
         <p class="<%= key %>"><%= message %></p>
         <% }) %>
         <% }) %>
-        <% } else { %> 
-           
-        <% } %> 
+        <% } else { %>
+
+        <% } %>
     </div>
 
     <%- include("./partials/share-post.ejs") %>
@@ -89,7 +89,13 @@
                 </div>
                 <%  }); %>
             </div>
-            <div><%- include("./partials/comment.ejs") %></div>
+            <div>
+                <form id="comment-form">
+                    <h6>Comment form</h6>
+                    <input type="text" name="comment" id="comment" value="">
+                    <button type="submit">Save comment</button>
+                </form>
+            </div>
 
             <button onclick="handleComment('<%= userPosts[i]._id %>')">comment</button>
         </li>

@@ -29,8 +29,17 @@ body {
 }
 
 #comment-form {
-    display: none;
-}
+    /* display: none; */
+} 
+#comment-form input{
+    /* display: none; */
+    background-color: grey;
+} 
+#comment-form button{
+    /* display: none; */
+    width: 20px;
+    height: 10px;
+} 
 
 .grey {
     color: #D6D6D6;
@@ -80,9 +89,12 @@ ion-icon {
     transform:scaleX(-1);
     font-size: 22px;
 }
-
+ul {
+    transform: rotate(180deg);
+}
 li {
     list-style-type: none;
+    transform: rotate(-180deg);
 }
 
 nav {
