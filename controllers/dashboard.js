@@ -228,9 +228,6 @@ async function addComment(req, res) {
             }
         });
 
-
-       
-      
     } catch (err) {
         console.log(err);
     } finally {

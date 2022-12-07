@@ -4,6 +4,7 @@ function handleDelete(id) {
         })
         .then(response => response.json())
         .then((data) => {
+
             console.log("data", data.message);
             document.getElementById(id).remove();
             // need to refresh page to see it 

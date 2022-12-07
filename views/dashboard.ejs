@@ -43,12 +43,13 @@
             <div class="likesAndComment displayFlex">
 
                 <div class="postLikeIcon displayFlex">
-                    <ion-icon id="likeBtn" name="heart-outline" onclick="handleLike('<%= publicPosts[i]._id %>')"></ion-icon>
+                    <ion-icon id="likeBtn" name="heart-outline" onclick="handleLike('<%= publicPosts[i]._id %>')">
+                    </ion-icon>
                     <% if (publicPosts[i].likeCount >= 1) { %>
                     <p class="postLikeCount"><%= publicPosts[i].likeCount || "" %> </p>
                     <% } %>
                 </div>
-                <div class="postCommentIcon displayFlex">
+                <div class="postCommentIcon displayFlex" onclick="handleComment('<%= publicPosts[i]._id %>')">
                     <ion-icon name="chatbubble-outline"></ion-icon>
                     <% if (publicPosts[i].commentCount >= 1) { %>
                     <p class="postLikeCount"><%= publicPosts[i].commentCount || "" %> </p>
@@ -74,11 +75,18 @@
 
                 </div>
                 <%  }); %>
+                <div>
+                <form id="comment-form">
+                    <h6>Comment form</h6>
+                    <input type="text" name="comment" id="comment" value="">
+                    <button type="submit">Save comment</button>
+                </form>
             </div>
-            <div><%- include("./partials/comment.ejs") %></div>
-           
-            <button onclick="handleComment('<%= publicPosts[i]._id %>')">comment</button>
+
+            </div>
+
         </li>
+
         <% } %>
     </ul>
 
