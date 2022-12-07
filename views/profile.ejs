@@ -29,34 +29,62 @@
     <%- include("./partials/update-post.ejs") %>
 
     <ul>
-        <% if (userPosts) { %>
         <% for(let i = 0; i < userPosts.length; i++) { %>
-        <li id="<%= userPosts[i]._id %>">
-            <b id="post.<%= userPosts[i]._id %>"><%= userPosts[i].post %></b>
-            <small>, posted by you</small>
-            <i id="visibility.<%= userPosts[i].visibility %>"><%= userPosts[i].visibility %></i>
-            <div>
-                <h4>LIKES <%= userPosts[i].likeCount || "" %></h4>
+        <li class="postContainer">
+            <div class="postedByInfo">
+                <div class="profilePic"></div>
+                <div class="postedBy">
+                    <p class="postedByName"> <%= userPosts[i].name || "Unknown" %></p>
+                    <p id="post.<%= userPosts[i]._id %>" class="postedByUsername grey">@<%= userPosts[i]?.postedBy?.username || "Unknown" %></p>
+                </div>
+                <div>
+                    <p id="visibility.<%= userPosts[i].visibility %>"><%= userPosts[i].visibility %></p>
+                </div>
             </div>
             <div>
-                <%  userPosts[i].comments.forEach(comment => { %>
-                <div>
-                    <h4>COMMENTS</h4>
-                    <p> <%= comment.comment || "Failed to display comment" %> </p>
-                    <p> <%= comment.postedBy.username || "Unknown" %> </p>
-                    <p> <%= comment.createdAt || "00:00" %> </p>
+                <p class="postContent"><%= userPosts[i].post %></p>
+            </div>
+
+            <div class="likesAndComment displayFlex">
+
+                <div class="postLikeIcon displayFlex">
+                    <ion-icon name="heart-outline" onclick="handleLike('<%= userPosts[i]._id %>')"></ion-icon>
+                    <% if (userPosts[i].likeCount >= 1) { %>
+                    <p class="postLikeCount"><%= userPosts[i].likeCount || "" %> </p>
+                    <% } %>
                 </div>
-                <%  }); %>
+                <div class="postCommentIcon displayFlex">
+                    <ion-icon name="chatbubble-outline"></ion-icon>
+                </div>
 
             </div>
-            <button
-                onclick="handleUpdate('<%= userPosts[i]._id %>', '<%= userPosts[i].post %>',  '<%= userPosts[i].visibility %>')">edit</button>
-            <button onclick="handleDelete('<%=userPosts[i]._id%>')">delete</button>
+            <div class="postComments">
+
+                <%  userPosts[i].comments.forEach(comment => { %>
+                <div class="comment">
+                    <div class="commentPostedBy displayFlex">
+                        <p class="postedByName"> <%= comment.postedBy.name || "Unknown" %> </p>
+                        <p class="postedByUsername grey"> @<%= comment.postedBy.username || "Unknown" %> </p>
+                    </div>
+                    <div class="commentContent">
+                        <p> <%= comment.comment || "Failed to display comment" %> </p>
+                    </div>
+                    <div class="commentCreatedAt grey">
+                        <p> <%= comment.createdAt || "00:00" %> </p>
+                    </div>
+
+
+                </div>
+                <%  }); %>
+            </div>
+            <div><%- include("./partials/comment.ejs") %></div>
+           
+            <button onclick="handleComment('<%= userPosts[i]._id %>')">comment</button>
         </li>
-        <% } %>
         <% } %>
     </ul>
 
+    
     <script src="/js/code.js"></script>
 
 </body>
