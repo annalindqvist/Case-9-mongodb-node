@@ -11,12 +11,8 @@ function checkIfAuth(req, res, next) {
         console.log("user is authenticated");
         next();
     } else {
-        console.log("User is NOT authenticated")
-        const query = (new URLSearchParams({
-            type: "fail",
-            message: "You must log in to access content"
-        })).toString();
-        res.redirect(`/?${query}`);
+        req.flash('error', 'You must sign in');
+        res.redirect('/');
     }
 }
 

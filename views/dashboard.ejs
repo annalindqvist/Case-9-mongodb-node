@@ -43,7 +43,7 @@
             <div class="likesAndComment displayFlex">
 
                 <div class="postLikeIcon displayFlex">
-                    <ion-icon name="heart-outline" onclick="handleLike('<%= publicPosts[i]._id %>')"></ion-icon>
+                    <ion-icon id="likeBtn" name="heart-outline" onclick="handleLike('<%= publicPosts[i]._id %>')"></ion-icon>
                     <% if (publicPosts[i].likeCount >= 1) { %>
                     <p class="postLikeCount"><%= publicPosts[i].likeCount || "" %> </p>
                     <% } %>

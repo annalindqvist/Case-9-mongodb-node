@@ -94,22 +94,29 @@ function handleLike(id) {
         })
         .then((res) => {
             if (res.redirected) {
+
+                // should be on backend 
+                // if (document.getElementById("likeBtn").setAttribute('name', 'heart')) {
+                //     document.getElementById("likeBtn").setAttribute('name', 'heart-outlined');
+                // } else {
+                //     document.getElementById("likeBtn").setAttribute('name', 'heart');
+                // }
+                
+
                 window.location.href = res.url;
             }
         })
         .catch((err) => console.log(err));
 }
 
+newDate("Tue Dec 06 2022 12:43:52 GMT+0100 (centraleuropeisk normaltid)")
 
-// remove 
-// let jsonData = JSON.stringify(res.json);
-// console.log("jsonData", jsonData);
+function newDate(date) {
 
-// console.log(res.json)
-
-
-// document.getElementById(id).remove();
-// document.getElementsByClassName("flash-message").innerText = res.json.message;
-// console.log("jsonDATA 2", jsonData);
-// console.log(res.json)
-// //window.location.href = res.url;
+    let dateOfPost = new Date(date);
+    let day = dateOfPost.getDate();
+    let month = dateOfPost.getMonth();
+    let correctDate = day + " " + month;
+    console.log(correctDate)
+    return dateOfPost;
+}

@@ -21,10 +21,10 @@
         <% Object.keys(flash).forEach((key) => { %> <%
             flash[key].forEach((message) => { %>
         <p class="<%= key %>"><%= message %></p>
-        <% }) %> 
+        <% }) %>
         <% }) %>
     </div>
-  
+
     <%- include("./partials/share-post.ejs") %>
     <%- include("./partials/update-post.ejs") %>
 
@@ -35,11 +35,16 @@
                 <div class="profilePic"></div>
                 <div class="postedBy">
                     <p class="postedByName"> <%= userPosts[i].name || "Unknown" %></p>
-                    <p id="post.<%= userPosts[i]._id %>" class="postedByUsername grey">@<%= userPosts[i]?.postedBy?.username || "Unknown" %></p>
+                    <p id="post.<%= userPosts[i]._id %>" class="postedByUsername grey">
+                        @<%= userPosts[i]?.postedBy?.username || "Unknown" %></p>
                 </div>
                 <div>
                     <p id="visibility.<%= userPosts[i].visibility %>"><%= userPosts[i].visibility %></p>
                 </div>
+                <div><button
+                        onclick="handleUpdate('<%= userPosts[i]._id %>', '<%= userPosts[i].post %>',  '<%= userPosts[i].visibility %>')">edit</button>
+                </div>
+                <div> <button onclick="handleDelete('<%=userPosts[i]._id%>')">delete</button></div>
             </div>
             <div>
                 <p class="postContent"><%= userPosts[i].post %></p>
@@ -48,7 +53,8 @@
             <div class="likesAndComment displayFlex">
 
                 <div class="postLikeIcon displayFlex">
-                    <ion-icon name="heart-outline" onclick="handleLike('<%= userPosts[i]._id %>')"></ion-icon>
+                    <ion-icon id="likeBtn" name="heart-outline" onclick="handleLike('<%= userPosts[i]._id %>')">
+                    </ion-icon>
                     <% if (userPosts[i].likeCount >= 1) { %>
                     <p class="postLikeCount"><%= userPosts[i].likeCount || "" %> </p>
                     <% } %>
@@ -78,13 +84,13 @@
                 <%  }); %>
             </div>
             <div><%- include("./partials/comment.ejs") %></div>
-           
+
             <button onclick="handleComment('<%= userPosts[i]._id %>')">comment</button>
         </li>
         <% } %>
     </ul>
 
-    
+
     <script src="/js/code.js"></script>
 
 </body>
