@@ -5,8 +5,9 @@ function handleDelete(id) {
         .then(response => response.json())
         .then((data) => {
 
-                console.log("data", data);
-                //document.getElementsByClassName("flash-message").innerText = jsonData.message;
+                console.log("data", data.message);
+                document.getElementById(id).remove();
+                document.getElementsByClassName("flash-message").innerText = data.message;
         })
         .catch((err) => console.log(err));
     };

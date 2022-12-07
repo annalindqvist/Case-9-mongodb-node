@@ -15,6 +15,17 @@ body {
     width: 100vw;
 }
 
+.flashMessage {
+    border: 1px solid white;
+}
+
+.success {
+    border: 1px solid green;
+}
+.error {
+    border: 1px solid red;
+}
+
 #comment-form {
     display: none;
 }

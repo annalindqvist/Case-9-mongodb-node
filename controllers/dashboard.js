@@ -139,7 +139,7 @@ async function addPost(req, res) {
         await postDoc.save();
 
         //console.log(postDoc)
-        req.flash('sucess', 'Successfully shared post!');
+        req.flash('success', 'Successfully shared post!');
 
     } catch (err) {
 
@@ -169,7 +169,7 @@ async function deletePost(req, res) {
         if (deletedPost.deletedCount == 0) {
             throw new Error('No post deleted');
         }
-        req.flash('sucess', 'Successfully deleted post!');
+        req.flash('success', 'Successfully deleted post!');
         //console.log("console efter flash")
 
     } catch (err) {
@@ -177,16 +177,7 @@ async function deletePost(req, res) {
         req.flash('error', err.message);
     } finally {
 
-    //const userPosts = await getProfile();
-    
-    // getUserPosts().then((data) => {
-    //     console.log(data)
-    //     res.render('profile', data)
-    // })
-
-    // res.redirect('')
-
-    res.json({message: req.flash});
+    res.json({message: req.session.flash});
     
     }
 }
@@ -209,7 +200,7 @@ async function updatePost(req, res) {
             post,
             visibility
         })
-        req.flash('sucess', 'Successfully updated post!');
+        req.flash('success', 'Successfully updated post!');
 
     } catch (err) {
 
