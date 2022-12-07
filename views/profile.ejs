@@ -13,12 +13,23 @@
 
 <body>
     <!-- include header -->
-    <%- include("./partials/header.ejs") %>
+
 
     <h1>Profile</h1>
 
+    <div class="flashMessage">
+        
+    </div>
+    <% Object.keys(flash).forEach((key) => { %> <%
+        flash[key].forEach((message) => { %>
+    <p class="<%= key %>"><%= message %></p>
+    <% }) %> <% }) %>
+
+
+
     <%- include("./partials/share-post.ejs") %>
     <%- include("./partials/update-post.ejs") %>
+
 
     <% if (locals.flash) { %>
     <% Object.keys(flash).forEach((key) => { %> <%
@@ -28,8 +39,9 @@
     <% } %>
 
     <ul>
+        <% if (userPosts) { %>
         <% for(let i = 0; i < userPosts.length; i++) { %>
-        <li>
+        <li id="<%= userPosts[i]._id %>">
             <b><%= userPosts[i].post %></b>
             <small>, posted by you</small>
             <i><%= userPosts[i].visibility %></i>
@@ -51,6 +63,7 @@
                 onclick="handleUpdate('<%= userPosts[i]._id %>', '<%= userPosts[i].post %>',  '<%= userPosts[i].visibility %>')">edit</button>
             <button onclick="handleDelete('<%=userPosts[i]._id%>')">delete</button>
         </li>
+        <% } %>
         <% } %>
     </ul>
 

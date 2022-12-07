@@ -5,7 +5,7 @@ import DashboardController from "../controllers/dashboard.js";
 
 
 const PostsRouter = Router();
-
+// ta bort query! 
 function checkIfAuth(req, res, next) {
     if(req.session.isAuth) {
         console.log("user is authenticated");

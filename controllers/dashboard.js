@@ -8,10 +8,41 @@ import {
     SITE_NAME
 } from "../configs.js";
 
+// async function getUserPosts(req, res) {
+    
+//     const {
+//         userId
+//     } = req.session;
+
+//     const userPosts = await PostModel.find({
+//             postedBy: Object(userId)
+//         })
+//         .populate([{
+//             path: "comments",
+//             populate: {
+//                 path: 'postedBy',
+//                 model: 'User'
+//             }
+//         }, {
+//             path: "likes",
+//             populate: {
+//                 path: 'likedBy',
+//                 model: 'User'
+//             }
+//         }])
+//         .exec();
+
+//     return userPosts;
+// }
+
+
+
 async function getProfile(req, res) {
     let locals = {};
 
     try {
+
+        console.log("req session", req.session)
         const {
             userId
         } = req.session;
@@ -32,7 +63,7 @@ async function getProfile(req, res) {
                 }
             }])
             .exec();
-        //console.log("user posts", userPosts)
+
         console.log("testing", userPosts)
 
         locals = {
@@ -40,7 +71,6 @@ async function getProfile(req, res) {
             site: SITE_NAME,
             user: req.session.username
         };
-        //console.log(locals)
 
     } catch (err) {
         console.log(err)
@@ -72,9 +102,6 @@ async function getDashboard(req, res) {
                 }
             }])
             .exec();
-
-        // console.log(publicPosts[7])
-        //console.log("publicPost[7]", publicPosts[7].comments[0]);
 
         locals = {
             publicPosts,
@@ -145,13 +172,22 @@ async function deletePost(req, res) {
         req.flash('sucess', 'Successfully deleted post!');
         //console.log("console efter flash")
 
-
     } catch (err) {
         //console.error(err);
         req.flash('error', err.message);
     } finally {
 
-        res.redirect('/profile');
+    //const userPosts = await getProfile();
+    
+    // getUserPosts().then((data) => {
+    //     console.log(data)
+    //     res.render('profile', data)
+    // })
+
+    // res.redirect('')
+
+    res.json({message: req.flash});
+    
     }
 }
 
@@ -180,7 +216,8 @@ async function updatePost(req, res) {
         req.flash('error', 'Someting went wrong');
     } finally {
 
-        res.redirect('/profile');
+        res.json(req.flash)
+        //res.redirect('/profile');
     }
 }
 
