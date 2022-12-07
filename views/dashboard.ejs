@@ -50,6 +50,9 @@
                 </div>
                 <div class="postCommentIcon displayFlex">
                     <ion-icon name="chatbubble-outline"></ion-icon>
+                    <% if (publicPosts[i].commentCount >= 1) { %>
+                    <p class="postLikeCount"><%= publicPosts[i].commentCount || "" %> </p>
+                    <% } %>
                 </div>
 
             </div>

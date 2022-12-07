@@ -220,11 +220,17 @@ async function addComment(req, res) {
         await PostModel.findOneAndUpdate({
             _id: ObjectId(id)
         }, {
+            $inc: {
+                'commentCount': 1
+            },
             $push: {
                 "comments": commentDoc._id
             }
         });
 
+
+       
+      
     } catch (err) {
         console.log(err);
     } finally {

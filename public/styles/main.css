@@ -161,6 +161,10 @@ input {
 
 /* DASHBOARD */
 
+#comment-form {
+    display: none;
+}
+
 /* .postContainer div {
     margin-bottom: 1rem;
 } */
