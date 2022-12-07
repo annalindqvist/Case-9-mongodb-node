@@ -207,8 +207,8 @@ async function updatePost(req, res) {
         req.flash('error', 'Someting went wrong');
     } finally {
 
-        res.json(req.flash)
-        //res.redirect('/profile');
+        res.json({message: req.session.flash});
+        // res.redirect('/profile');
     }
 }
 

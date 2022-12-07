@@ -32,9 +32,9 @@
         <% if (userPosts) { %>
         <% for(let i = 0; i < userPosts.length; i++) { %>
         <li id="<%= userPosts[i]._id %>">
-            <b><%= userPosts[i].post %></b>
+            <b id="post.<%= userPosts[i]._id %>"><%= userPosts[i].post %></b>
             <small>, posted by you</small>
-            <i><%= userPosts[i].visibility %></i>
+            <i id="visibility.<%= userPosts[i].visibility %>"><%= userPosts[i].visibility %></i>
             <div>
                 <h4>LIKES <%= userPosts[i].likeCount || "" %></h4>
             </div>
