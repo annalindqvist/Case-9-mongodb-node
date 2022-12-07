@@ -8,35 +8,6 @@ import {
     SITE_NAME
 } from "../configs.js";
 
-// async function getUserPosts(req, res) {
-    
-//     const {
-//         userId
-//     } = req.session;
-
-//     const userPosts = await PostModel.find({
-//             postedBy: Object(userId)
-//         })
-//         .populate([{
-//             path: "comments",
-//             populate: {
-//                 path: 'postedBy',
-//                 model: 'User'
-//             }
-//         }, {
-//             path: "likes",
-//             populate: {
-//                 path: 'likedBy',
-//                 model: 'User'
-//             }
-//         }])
-//         .exec();
-
-//     return userPosts;
-// }
-
-
-
 async function getProfile(req, res) {
     let locals = {};
 
@@ -49,7 +20,12 @@ async function getProfile(req, res) {
         const userPosts = await PostModel.find({
                 postedBy: Object(userId)
             })
-            .populate([{
+            .populate([
+                {
+                    path: "postedBy",
+                    select: "username"
+                },
+                {
                 path: "comments",
                 populate: {
                     path: 'postedBy',
@@ -64,7 +40,6 @@ async function getProfile(req, res) {
             }])
             .exec();
 
-        console.log("testing", userPosts)
 
         locals = {
             userPosts,
@@ -154,6 +129,7 @@ async function addPost(req, res) {
 // flashmessage doesnt show because getProfile function also runs - there is two redirects so the flashmessage disapers!
 // but why doesn't it happen when adding a new post.....?
 async function deletePost(req, res) {
+    let json = {}
 
     try {
         const {
@@ -169,15 +145,15 @@ async function deletePost(req, res) {
         if (deletedPost.deletedCount == 0) {
             throw new Error('No post deleted');
         }
-        req.flash('success', 'Successfully deleted post!');
+        json = 'Successfully deleted post!';
         //console.log("console efter flash")
 
     } catch (err) {
         //console.error(err);
-        req.flash('error', err.message);
+        json = 'Something went wrong.';
     } finally {
 
-    res.json({message: req.session.flash});
+    res.json({message: json});
     
     }
 }

@@ -17,12 +17,18 @@
 
     <h1>Profile</h1>
 
-    <div>
+    <div class="flash-message">
+        <p id="flash-message"></p>
+        <% if (locals.flash) { %>
+
         <% Object.keys(flash).forEach((key) => { %> <%
             flash[key].forEach((message) => { %>
         <p class="<%= key %>"><%= message %></p>
         <% }) %>
         <% }) %>
+        <% } else { %> 
+           
+        <% } %> 
     </div>
 
     <%- include("./partials/share-post.ejs") %>
@@ -30,12 +36,12 @@
 
     <ul>
         <% for(let i = 0; i < userPosts.length; i++) { %>
-        <li class="postContainer">
+        <li class="postContainer" id="<%= userPosts[i]._id %>">
             <div class="postedByInfo">
                 <div class="profilePic"></div>
                 <div class="postedBy">
                     <p class="postedByName"> <%= userPosts[i].name || "Unknown" %></p>
-                    <p id="post.<%= userPosts[i]._id %>" class="postedByUsername grey">
+                    <p class="postedByUsername grey">
                         @<%= userPosts[i]?.postedBy?.username || "Unknown" %></p>
                 </div>
                 <div>
@@ -47,7 +53,7 @@
                 <div> <button onclick="handleDelete('<%=userPosts[i]._id%>')">delete</button></div>
             </div>
             <div>
-                <p class="postContent"><%= userPosts[i].post %></p>
+                <p id="post.<%= userPosts[i]._id %>" class="postContent"><%= userPosts[i].post %></p>
             </div>
 
             <div class="likesAndComment displayFlex">

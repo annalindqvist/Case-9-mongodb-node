@@ -8,7 +8,7 @@ function handleDelete(id) {
             console.log("data", data.message);
             document.getElementById(id).remove();
             // need to refresh page to see it 
-            document.getElementsByClassName("flash-message").innerText = data.message;
+            document.getElementById("flash-message").innerText = data.message;
         })
         .catch((err) => console.log(err));
 };
@@ -50,6 +50,9 @@ function handleUpdate(id, post, visibility) {
                 let visibilityEl = document.getElementById(`visibility.${id}`);
                 postEl.innerText = updatedPost;
                 visibilityEl.innerText = updatedVisibility;
+
+                updatePostForm.elements.post.value = updatedPost;
+                updatePostForm.elements.visibility.value = updatedVisibility;
             })
             .catch((err) => console.log(err));
     }
