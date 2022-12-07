@@ -10,9 +10,11 @@ body {
     background-color: #333333;
     color: #FAF6F5;
     font-family: 'Poppins', sans-serif;
-    padding: 1rem;
-    height: 100vh;
+    padding: 3rem 1rem 4rem 1rem;
+    min-height: 100vh;
     width: 100vw;
+    position: relative;
+   
 }
 
 .flashMessage {
@@ -69,15 +71,31 @@ button {
 
 ion-icon {
     color: #FF5454;
-    width: 20px;
-    height: 20px;
+    font-size: 25px;
     /* background: linear-gradient(90deg, #C15CFF -0.77%, #C15CFF -0.76%, #FF5454 100.77%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; */
 }
+.postCommentIcon ion-icon {
+    transform:scaleX(-1);
+    font-size: 22px;
+}
 
 li {
     list-style-type: none;
+}
+
+nav {
+    background-color:#333333;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 56px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    z-index: 9999;
 }
 
 .centeredContent {

@@ -129,8 +129,8 @@ async function addPost(req, res) {
 // flashmessage doesnt show because getProfile function also runs - there is two redirects so the flashmessage disapers!
 // but why doesn't it happen when adding a new post.....?
 async function deletePost(req, res) {
-    let json = {}
-
+    let json = {};
+    let type = {};
     try {
         const {
             id
@@ -146,14 +146,20 @@ async function deletePost(req, res) {
             throw new Error('No post deleted');
         }
         json = 'Successfully deleted post!';
+        type = 'success';
         //console.log("console efter flash")
 
     } catch (err) {
         //console.error(err);
         json = 'Something went wrong.';
+        type = 'error';
     } finally {
 
-    res.json({message: json});
+    res.json({message: {
+        type,
+        feedback: json
+    }
+    });
     
     }
 }

@@ -4,11 +4,15 @@ function handleDelete(id) {
         })
         .then(response => response.json())
         .then((data) => {
-
             console.log("data", data.message);
             document.getElementById(id).remove();
             // need to refresh page to see it 
-            document.getElementById("flash-message").innerText = data.message;
+            document.getElementById("flash-message").innerText = data.message.feedback;
+            let element = document.getElementsByClassName("flash-message");
+            console.log(element)
+            for (var i = 0; i < element.length; i++) {
+                element[i].classList.add(data.message.type); 
+            }
         })
         .catch((err) => console.log(err));
 };
@@ -44,6 +48,7 @@ function handleUpdate(id, post, visibility) {
                 console.log("data", data.message);
                 // needs to refresh page to show.. 
                 document.getElementsByClassName("flash-message").innerText = data.message;
+                
 
                 // yes or no? works, but if i want to edit it again it gets the "original" edit that was from start..
                 let postEl = document.getElementById(`post.${id}`);
