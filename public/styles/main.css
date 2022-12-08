@@ -51,7 +51,7 @@ body {
 
 p,
 label,
-a {
+a, time {
     font-size: 12px;
     font-weight: normal;
 
@@ -82,12 +82,9 @@ button {
 
 }
 
-ion-icon {
+.bi {
     color: #FF5454;
-    font-size: 25px;
-    /* background: linear-gradient(90deg, #C15CFF -0.77%, #C15CFF -0.76%, #FF5454 100.77%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; */
+    font-size: 18px;
 }
 .postCommentIcon ion-icon {
     transform:scaleX(-1);
@@ -202,6 +199,9 @@ input {
 .postedByName {
     font-weight: 600;
 }
+.postedByUsernameTime {
+ display: flex;
+}
 .postLikeIcon {
     display: flex;
     align-items: center;
@@ -209,10 +209,10 @@ input {
 
 
 .postLikeCount {
-    margin-left: 0.2rem;
+    margin-left: 0.3rem;
 }
 .postCommentIcon {
-    margin-left: 0.5rem;
+    margin-left: 0.8rem;
 }
 
 .postComments {
@@ -225,6 +225,6 @@ input {
 .displayFlex {
     display: flex;
 }
-.commentPostedBy .postedByUsername {
-    margin-left: 0.2rem;
+.commentPostedBy p, .commentPostedBy time, .postedByUsernameTime p, .postedByUsernameTime time{
+    margin-right: 0.2rem;
 }
