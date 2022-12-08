@@ -86,6 +86,7 @@ button {
     color: #FF5454;
     font-size: 18px;
 }
+
 .postCommentIcon ion-icon {
     transform:scaleX(-1);
     font-size: 22px;
@@ -97,6 +98,7 @@ li {
     list-style-type: none;
     transform: rotate(-180deg);
     margin-bottom: 0.8rem;
+   
 }
 
 nav {
@@ -183,6 +185,25 @@ input {
     display: flex;
     align-items: center;
 
+}
+
+.postedByInfo {
+    position: relative;
+}
+.postMenuContainer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.postMenu {
+    display: none;
+    flex-direction: column;
+    z-index: 9;
+    background-color: lightgrey;
+    padding: 0.5rem;
+    
 }
 
 .profilePic {

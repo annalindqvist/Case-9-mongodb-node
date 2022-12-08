@@ -38,7 +38,12 @@
                 <div class="profilePic"></div>
                 <div class="postedBy">
                     <p class="postedByName"> <%= publicPosts[i].name || "Unknown" %></p>
-                    <p class="postedByUsername grey">@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></p>
+                    <div class="postedByUsernameTime grey">
+                        <p class="postedByUsername grey">@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></p>
+                        <p class="grey">•</p>
+                        <time class="grey" datetime="<%= publicPosts[i]?.createdAt%>"></time>
+                    </div>
+                   
                 </div>
             </div>
             <div>
@@ -101,7 +106,7 @@
         window.addEventListener('DOMContentLoaded', () => {
 
             let date = document.querySelectorAll('time');
-            console.log("date", date)
+
             date.forEach(dateEl => {
                 let newDate = timeSince(dateEl.dateTime)
                 dateEl.innerText = newDate;

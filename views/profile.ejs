@@ -46,17 +46,23 @@
                             @<%= userPosts[i]?.postedBy?.username || "Unknown" %></p>
                         <p class="grey">•</p>
                         <time class="grey" datetime="<%= userPosts[i]?.createdAt%>"></time>
+                        <p class="grey">•</p>
+                        <p id="visibility.<%= userPosts[i].visibility %>"><%= userPosts[i].visibility %></p>
                     </div>
                 </div>
-                <div>
-                    <p id="visibility.<%= userPosts[i].visibility %>"><%= userPosts[i].visibility %></p>
+
+                <div class="postMenuContainer" onclick="postMenu('<%= userPosts[i]._id %>')">
+                    <i class="bi bi-three-dots-vertical"></i>
+                    <div class="postMenu">
+                        <div
+                            onclick="handleUpdate('<%= userPosts[i]._id %>', '<%= userPosts[i].post %>',  '<%= userPosts[i].visibility %>')">
+                            <i class="bi bi-pen"></i>
+                        </div>
+                        <div onclick="handleDelete('<%=userPosts[i]._id%>')"> <i class="bi bi-trash3"></i></div>
+                    </div>
                 </div>
-                <div
-                    onclick="handleUpdate('<%= userPosts[i]._id %>', '<%= userPosts[i].post %>',  '<%= userPosts[i].visibility %>')">
-                    <i class="bi bi-pen"></i>
-                </div>
-                <div onclick="handleDelete('<%=userPosts[i]._id%>')"> <i class="bi bi-trash3"></i></div>
             </div>
+
             <div>
                 <p id="post.<%= userPosts[i]._id %>" class="postContent"><%= userPosts[i].post %></p>
             </div>
@@ -109,20 +115,18 @@
     <script src="/js/code.js"></script>
 
     <script>
-
-        
         window.addEventListener('DOMContentLoaded', () => {
 
             let date = document.querySelectorAll('time');
             setInterval(function () {
                 date.forEach(dateEl => {
-                    let newDate = timeSince(dateEl.dateTime)
-                    dateEl.innerText = newDate;
-                }),
-            30000});
+                        let newDate = timeSince(dateEl.dateTime)
+                        dateEl.innerText = newDate;
+                    }),
+                    30000
+            });
 
         });
-
     </script>
 
 

@@ -161,6 +161,18 @@ function timeSince(date) {
     return interval + ''+ intervalType;
 };
 
-let aDay = 24 * 60 * 60 * 1000;
+function postMenu(id) {
 
+   let liElement = document.getElementById(id);
+   const menuContainer = liElement.getElementsByClassName('postMenu')[0];
+
+    console.log(menuContainer)
+
+    if(menuContainer.style.display === 'none') {
+        menuContainer.style.display = "flex";
+
+    } else {
+        menuContainer.style.display = "none";
+    }
+}
 
