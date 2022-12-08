@@ -7,10 +7,10 @@ import bcrypt from "bcrypt";
 
 const Schema = mongoose.Schema;
 
-// read from .env file and add to process.env
+// Read from .env file and add to process.env
 dotenv.config();
 
-// exit program if no connection string
+// Exit program if no connection string
 if (!process.env.MONGO_CONNECTION_STR) {
     console.error("MONGO_CONNECTION_STR is not defined in .env file");
     exit();

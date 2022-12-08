@@ -1,8 +1,4 @@
 import UserModel from "../models/user.js";
-import {
-    SITE_NAME
-} from "../configs.js";
-
 
 async function getSignIn(req, res) {
     res.render("start", {
@@ -12,13 +8,11 @@ async function getSignIn(req, res) {
 
 async function getSignUp(req, res) {
     res.render("sign-up", {
-        serverMessage: req.query,
-        site: SITE_NAME,
+        serverMessage: req.query
     });
 }
 
 async function signOutUser(req, res) {
-    
     try {
         // FLASH FUNKAR INTE, but why?
         req.flash('success', 'Successfully logged out!')
@@ -72,10 +66,8 @@ async function addUser(req, res) {
                     email,
                     password
                 })
-
                 // save to database
                 await user.save()
-                
                 // create flash message - successull
                 req.flash('success', 'Successfully added user');
             }
@@ -89,7 +81,6 @@ async function addUser(req, res) {
     } finally {
         res.redirect(`/${url}`);
     }
-
 }
 
 async function signInUser(req, res) {
@@ -141,7 +132,6 @@ async function signInUser(req, res) {
     }
 
 }
-
 
 export default {
     getSignIn,

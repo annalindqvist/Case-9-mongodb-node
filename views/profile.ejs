@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +9,6 @@
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <title>Dashboard</title>
 </head>
-
 <body>
     <!-- include bottom-menu -->
     <%- include("./partials/bottom-menu.ejs") %>
@@ -20,14 +18,12 @@
     <div class="flash-message">
         <p id="flash-message"></p>
         <% if (locals.flash) { %>
-
         <% Object.keys(flash).forEach((key) => { %> <%
             flash[key].forEach((message) => { %>
         <p class="<%= key %>"><%= message %></p>
         <% }) %>
         <% }) %>
         <% } else { %>
-
         <% } %>
     </div>
 
@@ -58,17 +54,16 @@
 
             <div class="likesAndComment displayFlex">
 
-                <div class="postLikeIcon displayFlex">
+                <div class="postLikeIcon ">
                     <ion-icon id="likeBtn" name="heart-outline" onclick="handleLike('<%= userPosts[i]._id %>')">
                     </ion-icon>
                     <% if (userPosts[i].likeCount >= 1) { %>
                     <p class="postLikeCount"><%= userPosts[i].likeCount || "" %> </p>
                     <% } %>
                 </div>
-                <div class="postCommentIcon displayFlex">
+                <div class="postCommentIcon ">
                     <ion-icon name="chatbubble-outline"></ion-icon>
                 </div>
-
             </div>
             <div class="postComments">
 
@@ -85,7 +80,6 @@
                         <p> <%= comment.createdAt || "00:00" %> </p>
                     </div>
 
-
                 </div>
                 <%  }); %>
             </div>
@@ -96,15 +90,12 @@
                     <button type="submit">Save comment</button>
                 </form>
             </div>
-
             <button onclick="handleComment('<%= userPosts[i]._id %>')">comment</button>
         </li>
         <% } %>
     </ul>
 
-
     <script src="/js/code.js"></script>
 
 </body>
-
 </html>

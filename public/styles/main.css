@@ -17,6 +17,10 @@ body {
    
 }
 
+/* .visibleFlash {
+    background-color: hotpink;
+} */
+
 .flashMessage {
     border: 1px solid white;
 }
@@ -95,6 +99,7 @@ ul {
 li {
     list-style-type: none;
     transform: rotate(-180deg);
+    margin-bottom: 0.8rem;
 }
 
 nav {
@@ -157,6 +162,11 @@ input {
 .linkDiv {
     margin-top: 3rem;
     text-align: center;
+}
+
+.likesAndComment, .likesAndComment div {
+    display: flex;
+    align-items: center;
 }
 
 /* DASHBOARD */

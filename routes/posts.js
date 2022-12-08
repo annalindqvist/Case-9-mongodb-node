@@ -3,15 +3,13 @@ import { Router } from "express";
 import UserController from "../controllers/user.js";
 import DashboardController from "../controllers/dashboard.js";
 
-
 const PostsRouter = Router();
-// ta bort query! 
 function checkIfAuth(req, res, next) {
     if(req.session.isAuth) {
         console.log("user is authenticated");
         next();
     } else {
-        req.flash('error', 'You must sign in');
+        req.flash('error', 'You must sign in to access');
         res.redirect('/');
     }
 }
@@ -28,7 +26,5 @@ PostsRouter.put("/profile/:id", DashboardController.updatePost);
 
 PostsRouter.post("/dashboard/comment/:id", DashboardController.addComment);
 PostsRouter.post("/dashboard/like/:id", DashboardController.likePost);
-
-
 
 export default PostsRouter;

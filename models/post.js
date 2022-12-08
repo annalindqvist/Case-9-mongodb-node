@@ -6,7 +6,7 @@ import {
 
 const Schema = mongoose.Schema;
 
-// read from .env file and add to process.env
+// Read from .env file and add to process.env
 dotenv.config();
 
 // exit program if no connection string

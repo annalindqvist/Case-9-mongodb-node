@@ -14,17 +14,19 @@
     <div class="logo">
         <h1>TWETA</h1>
     </div>
-    
+
 
     <main class="centeredContent">
 
 
-        <% if (locals.flash) { %>
-        <% Object.keys(flash).forEach((key) => { %> <%
+        <div class="flash-message">
+            <% if (locals.flash) { %>
+            <% Object.keys(flash).forEach((key) => { %> <%
             flash[key].forEach((message) => { %>
-        <p class="<%= key %>"><%= message %></p>
-        <% }) %> <% }) %>
-        <% } %>
+            <p class="<%= key %>"><%= message %></p>
+            <% }) %> <% }) %>
+            <% } %>
+        </div>
 
         <form action="/sign-up" method="post">
             <label for="name">Name</label>

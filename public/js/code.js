@@ -4,20 +4,18 @@ function handleDelete(id) {
         })
         .then(response => response.json())
         .then((data) => {
-
-            console.log("data", data.message);
+            // remove post
             document.getElementById(id).remove();
-            // need to refresh page to see it 
+            // add json response for visual feedback and add class for styling
             document.getElementById("flash-message").innerText = data.message.feedback;
             let element = document.getElementsByClassName("flash-message");
-            console.log(element)
             for (var i = 0; i < element.length; i++) {
-                element[i].classList.add(data.message.type); 
+                element[i].classList.add(data.message.type);
+                // showFlash();
             }
         })
         .catch((err) => console.log(err));
 };
-
 
 function handleUpdate(id, post, visibility) {
 
@@ -45,20 +43,24 @@ function handleUpdate(id, post, visibility) {
             })
             .then(response => response.json())
             .then((data) => {
+                // add json response for visual feedback and add class for styling
+                document.getElementById("flash-message").innerText = data.message.feedback;
 
-                console.log("data", data.message);
-                // needs to refresh page to show.. 
-                document.getElementsByClassName("flash-message").innerText = data.message;
-                
+                let element = document.getElementsByClassName("flash-message");
+                for (var i = 0; i < element.length; i++) {
+                    element[i].classList.add(data.message.type);
+                }
 
-                // yes or no? works, but if i want to edit it again it gets the "original" edit that was from start..
+                // update the post
                 let postEl = document.getElementById(`post.${id}`);
                 let visibilityEl = document.getElementById(`visibility.${id}`);
                 postEl.innerText = updatedPost;
                 visibilityEl.innerText = updatedVisibility;
 
+                // for now - update the edit form with value of the last edit
                 updatePostForm.elements.post.value = updatedPost;
                 updatePostForm.elements.visibility.value = updatedVisibility;
+
             })
             .catch((err) => console.log(err));
     }
@@ -110,7 +112,7 @@ function handleLike(id) {
                 // } else {
                 //     document.getElementById("likeBtn").setAttribute('name', 'heart');
                 // }
-                
+
 
                 window.location.href = res.url;
             }
@@ -129,3 +131,69 @@ function newDate(date) {
     console.log(correctDate)
     return dateOfPost;
 }
+
+
+// function showFlash() {
+
+//     let element = document.getElementsByClassName("flash-message");
+//     for (var i = 0; i < element.length; i++) {
+//         element[i].classList.add('visibleFlash');
+//         setTimeout = ((i) => { element[i].classList = element[i].classList.replace("visibleFlash", ""); }, 4000);
+//     }
+
+//     // setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+//     // setTimeout = (() => { flashContainer.classList.remove("visibleFlash"); }, 4000);
+
+// }
+
+function timeSince(date) {
+    
+    console.log(date)
+    
+    
+    if (typeof date !== 'object') {
+        date = new Date(date);
+    }
+
+    let seconds = Math.floor((new Date() - date) / 1000);
+    let intervalType;
+
+    let interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) {
+        intervalType = 'year';
+    } else {
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) {
+            intervalType = 'month';
+        } else {
+            interval = Math.floor(seconds / 86400);
+            if (interval >= 1) {
+                intervalType = 'day';
+            } else {
+                interval = Math.floor(seconds / 3600);
+                if (interval >= 1) {
+                    intervalType = "hour";
+                } else {
+                    interval = Math.floor(seconds / 60);
+                    if (interval >= 1) {
+                        intervalType = "minute";
+                    } else {
+                        interval = seconds;
+                        intervalType = "second";
+                    }
+                }
+            }
+        }
+    }
+
+    if (interval > 1 || interval === 0) {
+        intervalType += 's';
+    }
+
+    console.log(interval + ' ' + intervalType);
+    return interval + ' ' + intervalType;
+};
+
+let aDay = 24 * 60 * 60 * 1000;
+//console.log(timeSince(new Date("Tue Dec 08 2022 09:43:52 GMT+0100 (centraleuropeisk normaltid)")));
+

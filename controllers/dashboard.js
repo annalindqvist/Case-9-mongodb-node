@@ -4,16 +4,12 @@ import LikeModel from "../models/like.js";
 import {
     ObjectId
 } from "mongodb";
-import {
-    SITE_NAME
-} from "../configs.js";
+
 
 async function getProfile(req, res) {
     let locals = {};
 
     try {
-
-        console.log("req session", req.session)
         const {
             userId
         } = req.session;
@@ -43,7 +39,6 @@ async function getProfile(req, res) {
 
         locals = {
             userPosts,
-            site: SITE_NAME,
             user: req.session.username
         };
 
@@ -51,7 +46,6 @@ async function getProfile(req, res) {
         console.log(err)
 
     } finally {
-        console.log("kom även till getProfile")
         res.render("profile", locals);
 
     }
@@ -80,27 +74,22 @@ async function getDashboard(req, res) {
 
         locals = {
             publicPosts,
-            site: SITE_NAME
         };
 
     } catch (err) {
         console.log(err)
     } finally {
-
         res.render("dashboard", locals);
-
     }
 }
 
 async function addPost(req, res) {
-
 
     try {
         const {
             post,
             visibility
         } = req.body;
-        //console.log(post, visibility);
 
         const postedBy = ObjectId(req.session.userId);
         const name = req.session.name;
@@ -113,7 +102,6 @@ async function addPost(req, res) {
         })
         await postDoc.save();
 
-        //console.log(postDoc)
         req.flash('success', 'Successfully shared post!');
 
     } catch (err) {
@@ -129,7 +117,7 @@ async function addPost(req, res) {
 // flashmessage doesnt show because getProfile function also runs - there is two redirects so the flashmessage disapers!
 // but why doesn't it happen when adding a new post.....?
 async function deletePost(req, res) {
-    let json = {};
+    let feedback = {};
     let type = {};
     try {
         const {
@@ -145,27 +133,28 @@ async function deletePost(req, res) {
         if (deletedPost.deletedCount == 0) {
             throw new Error('No post deleted');
         }
-        json = 'Successfully deleted post!';
+        feedback = 'Successfully deleted post!';
         type = 'success';
         //console.log("console efter flash")
 
     } catch (err) {
         //console.error(err);
-        json = 'Something went wrong.';
+        feedback = 'Something went wrong.';
         type = 'error';
     } finally {
 
     res.json({message: {
         type,
-        feedback: json
+        feedback
     }
     });
-    
     }
 }
 
 // same here as deletePost - two redirects so flashmessage disapers.. 
 async function updatePost(req, res) {
+    let feedback = {};
+    let type = {};
 
     try {
         const {
@@ -182,15 +171,20 @@ async function updatePost(req, res) {
             post,
             visibility
         })
-        req.flash('success', 'Successfully updated post!');
+        feedback = 'Successfully updated post!';
+        type = 'success';
 
     } catch (err) {
 
-        req.flash('error', 'Someting went wrong');
+        feedback = 'Something went wrong.';
+        type = 'error';
     } finally {
 
-        res.json({message: req.session.flash});
-        // res.redirect('/profile');
+        res.json({message: {
+            type,
+            feedback
+        }
+    });
     }
 }
 
@@ -215,7 +209,6 @@ async function addComment(req, res) {
         });
         // save comment do db - ... yes or no? 
         await commentDoc.save();
-
         // push to post-comment-array ... yes or no?
         await PostModel.findOneAndUpdate({
             _id: ObjectId(id)
@@ -227,7 +220,6 @@ async function addComment(req, res) {
                 "comments": commentDoc._id
             }
         });
-
     } catch (err) {
         console.log(err);
     } finally {
@@ -237,7 +229,6 @@ async function addComment(req, res) {
 }
 
 async function likePost(req, res) {
-    console.log("likepost funktion")
     try {
         // get comment, post-id and who posted comment
         const {
@@ -250,22 +241,13 @@ async function likePost(req, res) {
             })
             .populate("likes")
             .exec()
-
-        console.log("likedby", likedBy)
         const alreadyLike = findPost[0].likes.some(like => like.likedBy == likedBy);
         // works sometimes, not always, why?
-        console.log("alreadyLike", alreadyLike);
-
-
-
-
 
         if (alreadyLike) {
             // TODO. Delete from likes-collection aswell.. how to? 
-
             const findLikeId = findPost[0].likes.map(id => id._id);
             const likeId = findLikeId[0];
-            console.log("findpodt[0]...", likeId);
 
             const dislike = await LikeModel.deleteOne({
                 _id: likeId,
@@ -286,11 +268,9 @@ async function likePost(req, res) {
                         'likes': likeId
                     }
                 });
-                console.log("disliked post")
             }
 
         } else {
-
             const likeDoc = new LikeModel({
                 like: true,
                 likedBy,
@@ -322,7 +302,6 @@ async function likePost(req, res) {
 }
 
 export default {
-
     getProfile,
     getDashboard,
     addPost,
