@@ -17,29 +17,30 @@
         <div class="logoSignIn">
             <h1>TWETA</h1>
         </div>
-        
-        <div class="flash-message">
-            <% if (locals.flash) { %>
-                <% Object.keys(flash).forEach((key) => { %> <%
-                    flash[key].forEach((message) => { %>
-                <p class="<%= key %>"><%= message %></p>
-                <% }) %> <% }) %>
-                <% } %>
-        </div>
-       
-        
 
-        <form action="/sign-in" method="post">
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" required>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
-            <button type="submit">SIGN IN</button>
-        </form>
-        <div class="linkDiv">
-            <a href="/sign-up">Don't you have an account? Sign up!</a>
-        </div>
-        
+        <% if (locals.flash) { %>
+            <% Object.keys(flash).forEach((key) => { %> <%
+                    flash[key].forEach((message) => { %>
+            <div class="flash-message <%= key %>">
+                <p><%= message %></p>
+            </div>
+            <% }) %> <% }) %>
+
+
+            <% } %>
+
+
+            <form action="/sign-in" method="post">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+                <button type="submit">SIGN IN</button>
+            </form>
+            <div class="linkDiv">
+                <a href="/sign-up">Don't you have an account? Sign up!</a>
+            </div>
+
     </main>
 
 </body>

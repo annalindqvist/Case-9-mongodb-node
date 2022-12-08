@@ -17,18 +17,36 @@ body {
    
 }
 
+
 /* .visibleFlash {
     background-color: hotpink;
 } */
 
 .flashMessage {
     border: 1px solid white;
+    padding: 1rem;
+}
+
+.flash-message {
+   /* position: fixed;
+   top: 4rem; */
+   /* top: 50%;
+   bottom: 50%; */
+   
+   padding: 0.5rem;
+    text-align: center;
+    border-radius: 50px;
+    
 }
 
 .success {
+    
     border: 1px solid green;
+    
 }
+
 .error {
+    
     border: 1px solid red;
 }
 
@@ -208,7 +226,8 @@ input {
 
 .profilePic {
     border-radius: 50%;
-    background-color: #FF5454;
+    background-color: lightgrey;
+    
     width: 30px;
     height: 30px;
 }
