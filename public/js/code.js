@@ -148,9 +148,8 @@ function newDate(date) {
 
 function timeSince(date) {
     
-    console.log(date)
-    
-    
+    console.log("date", date)
+
     if (typeof date !== 'object') {
         date = new Date(date);
     }
@@ -190,10 +189,10 @@ function timeSince(date) {
         intervalType += 's';
     }
 
-    console.log(interval + ' ' + intervalType);
+    // console.log(interval + ' ' + intervalType);
     return interval + ' ' + intervalType;
 };
 
 let aDay = 24 * 60 * 60 * 1000;
-//console.log(timeSince(new Date("Tue Dec 08 2022 09:43:52 GMT+0100 (centraleuropeisk normaltid)")));
+console.log("timeSince test", timeSince(new Date("Tue Dec 08 2022 09:43:52 GMT+0100 (centraleuropeisk normaltid)")));
 

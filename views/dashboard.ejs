@@ -70,7 +70,7 @@
                         <p> <%= comment.comment || "Failed to display comment" %> </p>
                     </div>
                     <div class="commentCreatedAt grey">
-                        <p value="timeSince('<%= comment.createdAt%>')"> </p>
+                        <time datetime="<%= comment.createdAt%>"> </time>
                       
                     </div>
 
@@ -92,7 +92,23 @@
         <% } %>
     </ul>
 
+
     <script src="/js/code.js"></script>
+
+    <script>
+
+        window.addEventListener('DOMContentLoaded', () => {
+
+            let date = document.querySelectorAll('time');
+            console.log("date", date)
+            date.forEach(dateEl => {
+                let newDate = timeSince(dateEl.dateTime)
+                dateEl.innerText = newDate;
+            });
+            
+        });
+
+    </script>
 
 </body>
 
