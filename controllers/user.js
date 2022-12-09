@@ -24,7 +24,6 @@ async function signOutUser(req, res) {
         req.flash('error', 'Failed to logged out')
         
     } finally {
-        
         res.redirect('/start');
     }
 }

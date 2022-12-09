@@ -26,7 +26,7 @@
     <% if (locals.flash) { %>
         <% Object.keys(flash).forEach((key) => { %> <%
                 flash[key].forEach((message) => { %>
-        <div class="flash-message <%= key %> animate__fadeInDown">
+        <div class="flash-message flash-message-json <%= key %> animate__fadeInDown fadeout">
             <p><%= message %></p>
         </div>
         <% }) %> <% }) %>

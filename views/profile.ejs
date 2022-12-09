@@ -22,14 +22,14 @@
 
     <h1 class="topLogo">TWETA</h1>
 
-    <div class="flash-message animate__animated animate__fadeInDown">
+    <div class="flash-message flash-message-json ">
         <p id="flash-message-feedback"></p>
     </div>
 
     <% if (locals.flash) { %>
         <% Object.keys(flash).forEach((key) => { %> <%
                 flash[key].forEach((message) => { %>
-        <div class="flash-message <%= key %> animate__animated animate__fadeInDown">
+        <div class="flash-message <%= key %>  fadeout">
             <p><%= message %></p>
         </div>
         <% }) %> <% }) %>

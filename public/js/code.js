@@ -11,7 +11,8 @@ function handleDelete(id) {
             let element = document.getElementsByClassName("flash-message");
             for (var i = 0; i < element.length; i++) {
                 element[i].classList.add(data.message.type);
-                // showFlash();
+                element[i].classList.add('fadeout');
+                element[i].style.display = "block";
             }
         })
         .catch((err) => console.log(err));
@@ -19,8 +20,10 @@ function handleDelete(id) {
 
 function handleUpdate(id, post, visibility) {
 
+    const updatePostFormContainer = document.getElementById("updatePostForm");
+    updatePostFormContainer.style.display = "block";
     const updatePostForm = document.getElementById("update-form");
-    updatePostForm.hidden = false;
+    
 
     updatePostForm.elements.post.value = post;
     updatePostForm.elements.visibility.value = visibility;
@@ -30,6 +33,13 @@ function handleUpdate(id, post, visibility) {
 
         const updatedPost = updatePostForm.elements.post.value;
         const updatedVisibility = updatePostForm.elements.visibility.value;
+
+        if(updatePostFormContainer.style.display === 'none') {
+            updatePostFormContainer.style.display = "block";
+    
+        } else {
+            updatePostFormContainer.style.display = "none";
+        }
   
 
         fetch(`/profile/${id}`, {
@@ -50,6 +60,7 @@ function handleUpdate(id, post, visibility) {
                 let element = document.getElementsByClassName("flash-message");
                 for (var i = 0; i < element.length; i++) {
                     element[i].classList.add(data.message.type);
+                    element[i].classList.add("fadeout");
                     element[i].style.display = "block";
                 }
 

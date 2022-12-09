@@ -27,34 +27,34 @@ body {
     padding: 1rem;
 }
 
-.flash-message {
+.flash-message-json {
     display: none;
+}
+
+.flash-message {
+    
     position: fixed;
     top: 3rem;
     width: 90%;
     padding: 0.5rem;
     text-align: center;
     border-radius: 50px;
-
-    /* animation:flash-message 0.5s 1;
-    -webkit-animation:flash-message 0.5s 1;
-    animation-fill-mode: forwards;
-
-    animation-delay:2s;
-    -webkit-animation-delay:1s; 
-    -webkit-animation-fill-mode: forwards; */
+    z-index: 999;
 }
 
-/* @keyframes flash-message{
-    from {opacity :1;}
-    to {opacity :0;}
+.fadeout {
+    opacity: 1;
+    animation: fade-out 300ms 4s ease-out forwards;
+   
 }
-
-@-webkit-keyframes flash-message{
-    from {opacity :1;}
-    to {opacity :0;}
-} */
-
+@keyframes fade-out {
+     from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    } 
+}
 
 .success {
     border: 2px solid green;
@@ -121,7 +121,6 @@ button {
     border-radius: 50px;
     padding: 1rem 0 1rem 0;
     color: #FAF6F5;
-
 }
 
 .bi {
@@ -165,6 +164,18 @@ nav .bi {
     font-size: 22px;
 
 }
+#updatePostForm {
+    display: none;
+    border-radius: 1rem 1rem 0 0;
+    background-color: #474747;
+     position: fixed;
+    bottom: 0;
+    left: 0; 
+    width: 100%;
+    height: 60%;
+    padding: 1rem;
+    z-index: 999;
+}
 
 #sharePostContainer {
     display: none;
@@ -179,7 +190,7 @@ nav .bi {
     z-index: 999;
 }
 
-#sharePostContainer form #post {
+#sharePostContainer form #post,#updatePostForm form #post {
     margin: 1rem 0 1rem 0;
     border-radius: 10px;
     border: none;
@@ -188,7 +199,7 @@ nav .bi {
     padding: 0.5rem;
 }
 
-#sharePostContainer form fieldset {
+#sharePostContainer form fieldset, #updatePostForm form fieldset {
     border: none;
     display: flex;
     align-items: center;
@@ -196,36 +207,35 @@ nav .bi {
 
 }
 
-#sharePostContainer form fieldset input {
+#sharePostContainer form fieldset input, #updatePostForm form fieldset input{
     margin-bottom: 0;
 }
 
-#sharePostContainer label {
+#sharePostContainer label, #updatePostForm label {
     margin-right: 0.3rem;
 }
 
-#sharePostContainer label:last-of-type {
+#sharePostContainer label:last-of-type, #updatePostForm label:last-of-type {
     margin-left: 0.8rem;
 
 }
 
-
 .centeredContent {
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+   
 }
 
 .logoSignIn {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 form {
     display: flex;
     flex-direction: column;
     margin: 0.5rem;
-
 }
 
 input {
@@ -242,10 +252,8 @@ input {
 
 #tAndCCont {
     display: flex;
-
     align-items: center;
     margin-bottom: 2rem;
-
 }
 
 #tAndCCont input {
