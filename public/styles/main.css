@@ -28,26 +28,42 @@ body {
 }
 
 .flash-message {
-    /* position: fixed;
-   top: 4rem; */
-    /* top: 50%;
-   bottom: 50%; */
-
+    display: none;
+    position: fixed;
+    top: 3rem;
+    width: 90%;
     padding: 0.5rem;
     text-align: center;
     border-radius: 50px;
 
+    /* animation:flash-message 0.5s 1;
+    -webkit-animation:flash-message 0.5s 1;
+    animation-fill-mode: forwards;
+
+    animation-delay:2s;
+    -webkit-animation-delay:1s; 
+    -webkit-animation-fill-mode: forwards; */
 }
 
+/* @keyframes flash-message{
+    from {opacity :1;}
+    to {opacity :0;}
+}
+
+@-webkit-keyframes flash-message{
+    from {opacity :1;}
+    to {opacity :0;}
+} */
+
+
 .success {
-
-    border: 1px solid green;
-
+    border: 2px solid green;
+    background-color: rgb(102, 163, 102);
 }
 
 .error {
-
-    border: 1px solid red;
+    border: 2px solid red;
+    background-color: rgb(211, 78, 78);
 }
 
 #comment-form {
@@ -75,13 +91,11 @@ a,
 time {
     font-size: 12px;
     font-weight: normal;
-
 }
 
 a {
     color: #FAF6F5;
     text-decoration: none;
-
 }
 
 h1 {
@@ -91,6 +105,13 @@ h1 {
     -webkit-text-fill-color: transparent;
     text-align: center;
     font-weight: normal;
+}
+
+.topLogo {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 button {
@@ -122,7 +143,7 @@ ul {
 li {
     list-style-type: none;
     transform: rotate(-180deg);
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
 
 }
 
@@ -174,17 +195,18 @@ nav .bi {
     margin: 0.5rem 0 1rem 0;
 
 }
-#sharePostContainer form fieldset input{
+
+#sharePostContainer form fieldset input {
     margin-bottom: 0;
 }
 
-#sharePostContainer label{
+#sharePostContainer label {
     margin-right: 0.3rem;
 }
 
 #sharePostContainer label:last-of-type {
     margin-left: 0.8rem;
-   
+
 }
 
 
@@ -253,7 +275,11 @@ input {
     margin-bottom: 1rem;
 } */
 
-.postContent,
+.postContent {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
 .likesAndComment {
     margin-top: 0.5rem;
 }

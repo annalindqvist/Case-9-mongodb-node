@@ -7,7 +7,7 @@ function handleDelete(id) {
             // remove post
             document.getElementById(id).remove();
             // add json response for visual feedback and add class for styling
-            document.getElementById("flash-message").innerText = data.message.feedback;
+            document.getElementById("flash-message-feedback").innerText = data.message.feedback;
             let element = document.getElementsByClassName("flash-message");
             for (var i = 0; i < element.length; i++) {
                 element[i].classList.add(data.message.type);
@@ -45,11 +45,12 @@ function handleUpdate(id, post, visibility) {
             .then(response => response.json())
             .then((data) => {
                 // add json response for visual feedback and add class for styling
-                document.getElementById("flash-message").innerText = data.message.feedback;
+                document.getElementById("flash-message-feedback").innerText = data.message.feedback;
 
                 let element = document.getElementsByClassName("flash-message");
                 for (var i = 0; i < element.length; i++) {
                     element[i].classList.add(data.message.type);
+                    element[i].style.display = "block";
                 }
 
                 // update the post
@@ -59,7 +60,6 @@ function handleUpdate(id, post, visibility) {
                 visibilityEl.innerText = updatedVisibility;
 
                 // for now - update the edit form with value of the last edit
-                console.log("vis", updatedVisibility)
                 updatePostForm.elements.post.value = updatedPost;
                 updatePostForm.elements.visibility.value = updatedVisibility;
 

@@ -6,10 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/main.css">
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
     <title>Dashboard</title>
 </head>
 
@@ -18,15 +21,19 @@
     <!-- include bottom-menu -->
     <%- include("./partials/bottom-menu.ejs") %>
 
-    <h1>Dashboard</h1>
+    <h1 class="topLogo">TWETA</h1>
 
-    <div class="flash-message">
-        <% if (locals.flash) { %>
+    <% if (locals.flash) { %>
         <% Object.keys(flash).forEach((key) => { %> <%
-            flash[key].forEach((message) => { %>
-        <p class="<%= key %>"><%= message %></p>
+                flash[key].forEach((message) => { %>
+        <div class="flash-message <%= key %> animate__fadeInDown">
+            <p><%= message %></p>
+        </div>
         <% }) %> <% }) %>
         <% } %>
+
+    <div class="flash-message animate__fadeInDown">
+        <p id="flash-message-feedback"></p>
     </div>
 
     <%- include("./partials/share-post.ejs") %>
