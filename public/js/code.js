@@ -30,6 +30,7 @@ function handleUpdate(id, post, visibility) {
 
         const updatedPost = updatePostForm.elements.post.value;
         const updatedVisibility = updatePostForm.elements.visibility.value;
+  
 
         fetch(`/profile/${id}`, {
                 method: "PUT",
@@ -58,6 +59,7 @@ function handleUpdate(id, post, visibility) {
                 visibilityEl.innerText = updatedVisibility;
 
                 // for now - update the edit form with value of the last edit
+                console.log("vis", updatedVisibility)
                 updatePostForm.elements.post.value = updatedPost;
                 updatePostForm.elements.visibility.value = updatedVisibility;
 
@@ -169,10 +171,21 @@ function postMenu(id) {
     console.log(menuContainer)
 
     if(menuContainer.style.display === 'none') {
-        menuContainer.style.display = "flex";
+        menuContainer.style.display = "block";
 
     } else {
         menuContainer.style.display = "none";
     }
 }
 
+
+function sharePost() {
+    const sharePostElement = document.getElementById("sharePostContainer");
+
+    if(sharePostElement.style.display === 'none') {
+        sharePostElement.style.display = "block";
+
+    } else {
+        sharePostElement.style.display = "none";
+    }
+}
