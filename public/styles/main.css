@@ -17,11 +17,6 @@ body {
 
 }
 
-
-/* .visibleFlash {
-    background-color: hotpink;
-} */
-
 .flashMessage {
     border: 1px solid white;
     padding: 1rem;
@@ -32,7 +27,6 @@ body {
 }
 
 .flash-message {
-    
     position: fixed;
     top: 3rem;
     width: 90%;
@@ -66,19 +60,31 @@ body {
     background-color: rgb(211, 78, 78);
 }
 
-#comment-form {
-    /* display: none; */
+.comment-form {
+    display: none;
+    margin-left: 0;
+}
+.comment-form div {
+    display: flex;
+    align-items: center;
+    margin: 0;
 }
 
-#comment-form input {
-    /* display: none; */
-    background-color: grey;
+.comment-form input {
+    border-radius: 5px;
+    background-color: #474747;
+    border: none;
+    margin-right: 0.5rem;
+    width: 95%;
+    margin-bottom: 0;
+    padding-left: 0.5rem;
 }
 
-#comment-form button {
-    /* display: none; */
-    width: 20px;
-    height: 10px;
+.comment-form button {
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
 }
 
 .grey {
@@ -106,12 +112,25 @@ h1 {
     text-align: center;
     font-weight: normal;
 }
+h2 {
+   font-size: 18px;
+   font-weight: 600;
+}
 
 .topLogo {
     position: fixed;
-    top: 1rem;
+    top: 1.5rem;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+#signOut {
+    position: fixed;
+    top: 1.5rem;
+    right: 1rem;
+    transform: translate(-50%, -50%);
+}
+#signOut .bi {
+    font-size: 22px;
 }
 
 button {
@@ -142,7 +161,8 @@ ul {
 li {
     list-style-type: none;
     transform: rotate(-180deg);
-    margin-bottom: 1rem;
+    margin-bottom: 1.3rem;
+    
 
 }
 
@@ -273,6 +293,16 @@ input {
     align-items: center;
 }
 
+#profileInfo, #dashboardInfo {
+    display: flex;
+   
+    flex-direction: column;
+    padding-bottom: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    border-bottom: 1px solid #474747;
+}
+
 /* DASHBOARD */
 
 #comment-form {
@@ -330,7 +360,9 @@ input {
 .profilePic {
     border-radius: 50%;
     background-color: lightgrey;
-
+    background-image: url("https://source.unsplash.com/random/?face");
+    background-position: center;
+    background-size: cover;
     width: 30px;
     height: 30px;
 }
@@ -367,7 +399,7 @@ input {
 }
 
 .comment {
-    margin-top: 0.3rem;
+    margin-top: 0.4rem;
 }
 
 .displayFlex {

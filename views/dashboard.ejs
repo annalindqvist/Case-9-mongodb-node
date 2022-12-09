@@ -9,32 +9,37 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <title>Dashboard</title>
 </head>
 
 <body>
-  
+
     <!-- include bottom-menu -->
     <%- include("./partials/bottom-menu.ejs") %>
 
-    <h1 class="topLogo">TWETA</h1>
+    <div>
+        <h1 class="topLogo">TWETA</h1>
+    </div>
+    
 
     <% if (locals.flash) { %>
-        <% Object.keys(flash).forEach((key) => { %> <%
+    <% Object.keys(flash).forEach((key) => { %> <%
                 flash[key].forEach((message) => { %>
-        <div class="flash-message flash-message-json <%= key %> animate__fadeInDown fadeout">
-            <p><%= message %></p>
-        </div>
-        <% }) %> <% }) %>
-        <% } %>
+    <div class="flash-message flash-message-json <%= key %> animate__fadeInDown fadeout">
+        <p><%= message %></p>
+    </div>
+    <% }) %> <% }) %>
+    <% } %>
 
     <div class="flash-message animate__fadeInDown">
         <p id="flash-message-feedback"></p>
     </div>
+
+    <div id="dashboardInfo">
+        <h2>Hey <%= user %>, read the latest on Tweta!</h2>
+    </div>
+
 
     <%- include("./partials/share-post.ejs") %>
 
@@ -50,7 +55,7 @@
                         <p class="grey">•</p>
                         <time class="grey" datetime="<%= publicPosts[i]?.createdAt%>"></time>
                     </div>
-                   
+
                 </div>
             </div>
             <div>
@@ -60,7 +65,7 @@
             <div class="likesAndComment displayFlex">
                 <div class="postLikeIcon displayFlex">
                     <i class="bi bi-heart" onclick="handleLike('<%= publicPosts[i]._id %>')"></i>
-                   
+
                     <% if (publicPosts[i].likeCount >= 1) { %>
                     <p class="postLikeCount"><%= publicPosts[i].likeCount || "" %> </p>
                     <% } %>
@@ -85,16 +90,15 @@
                     <div class="commentContent">
                         <p> <%= comment.comment || "Failed to display comment" %> </p>
                     </div>
-                    
-
-
                 </div>
                 <%  }); %>
                 <div>
-                    <form id="comment-form">
-                        <h6>Comment form</h6>
-                        <input type="text" name="comment" id="comment" value="">
-                        <button type="submit">Save comment</button>
+                    <form id="comment-form.<%=publicPosts[i]._id %>" class="comment-form">
+                        <div>
+
+                            <input type="text" name="comment" id="comment" placeholder="@<%= user %>">
+                            <button type="submit"><i class="bi bi-send"></i></button>
+                        </div>
                     </form>
                 </div>
 
@@ -109,18 +113,18 @@
     <script src="/js/code.js"></script>
 
     <script>
-
         window.addEventListener('DOMContentLoaded', () => {
 
             let date = document.querySelectorAll('time');
-
-            date.forEach(dateEl => {
-                let newDate = timeSince(dateEl.dateTime)
-                dateEl.innerText = newDate;
+            setInterval(function () {
+                date.forEach(dateEl => {
+                        let newDate = timeSince(dateEl.dateTime)
+                        dateEl.innerText = newDate;
+                    }),
+                    30000
             });
-            
-        });
 
+        });
     </script>
 
 </body>

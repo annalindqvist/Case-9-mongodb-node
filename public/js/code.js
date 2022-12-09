@@ -81,8 +81,16 @@ function handleUpdate(id, post, visibility) {
 
 function handleComment(id) {
 
-    const commentForm = document.getElementById("comment-form");
-    commentForm.style.display = "flex";
+    const commentForm = document.getElementById(`comment-form.${id}`);
+
+
+    if(commentForm.style.display === 'none') {
+        commentForm.style.display = "block";
+
+    } else {
+        commentForm.style.display = "none";
+    }
+   
 
     commentForm.onsubmit = (e) => {
         e.preventDefault();
@@ -100,7 +108,6 @@ function handleComment(id) {
             })
             .then((res) => {
                 if (res.redirected) {
-
                     window.location.href = res.url;
                 }
             })

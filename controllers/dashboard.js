@@ -39,7 +39,8 @@ async function getProfile(req, res) {
 
         locals = {
             userPosts,
-            user: req.session.username
+            user: req.session.username,
+            userName: req.session.username
         };
 
     } catch (err) {
@@ -74,6 +75,7 @@ async function getDashboard(req, res) {
 
         locals = {
             publicPosts,
+            user: req.session.name,
         };
 
     } catch (err) {
