@@ -44,7 +44,7 @@ async function getProfile(req, res) {
         };
 
     } catch (err) {
-        console.log(err)
+        console.log(err);
 
     } finally {
         res.render("profile", locals);
@@ -112,12 +112,11 @@ async function addPost(req, res) {
 
     } finally {
 
-        res.redirect('/profile');
+        const backURL = req.header('Referer') || '/';
+        res.redirect(backURL);
     }
 }
 
-// flashmessage doesnt show because getProfile function also runs - there is two redirects so the flashmessage disapers!
-// but why doesn't it happen when adding a new post.....?
 async function deletePost(req, res) {
     let feedback = {};
     let type = {};
@@ -125,7 +124,6 @@ async function deletePost(req, res) {
         const {
             id
         } = req.params;
-        //console.log(id)
 
         // check if user who posted this is same as the one trying to delete post samt with edit and add..?
 
@@ -137,10 +135,8 @@ async function deletePost(req, res) {
         }
         feedback = 'Successfully deleted post!';
         type = 'success';
-        //console.log("console efter flash")
 
     } catch (err) {
-        //console.error(err);
         feedback = 'Something went wrong.';
         type = 'error';
     } finally {
@@ -153,7 +149,6 @@ async function deletePost(req, res) {
     }
 }
 
-// same here as deletePost - two redirects so flashmessage disapers.. 
 async function updatePost(req, res) {
     let feedback = {};
     let type = {};
@@ -222,8 +217,10 @@ async function addComment(req, res) {
                 "comments": commentDoc._id
             }
         });
+        req.flash('success', 'Successfully shared comment!');
     } catch (err) {
         console.log(err);
+        req.flash('error', 'Someting went wrong, try again.');
     } finally {
         const backURL = req.header('Referer') || '/';
         res.redirect(backURL);
@@ -231,6 +228,7 @@ async function addComment(req, res) {
 }
 
 async function likePost(req, res) {
+    let q = null;
     try {
         // get comment, post-id and who posted comment
         const {
@@ -244,10 +242,8 @@ async function likePost(req, res) {
             .populate("likes")
             .exec()
         const alreadyLike = findPost[0].likes.some(like => like.likedBy == likedBy);
-        // works sometimes, not always, why?
 
         if (alreadyLike) {
-            // TODO. Delete from likes-collection aswell.. how to? 
             const findLikeId = findPost[0].likes.map(id => id._id);
             const likeId = findLikeId[0];
 
@@ -256,8 +252,10 @@ async function likePost(req, res) {
             });
 
             if (dislike.deletedCount == 0) {
-                console.log("deleted like = 0", dislike)
-
+                q = new URLSearchParams({
+                    type: "error",
+                    message: "No like was removed!",
+                  });
             } else {
 
                 await PostModel.updateOne({
@@ -270,6 +268,10 @@ async function likePost(req, res) {
                         'likes': likeId
                     }
                 });
+                q = new URLSearchParams({
+                    type: "success",
+                    message: "Successfully disliked post",
+                  });
             }
 
         } else {
@@ -292,14 +294,18 @@ async function likePost(req, res) {
                     }
                 }
             });
-            console.log("like post")
+            q = new URLSearchParams({
+                type: "success",
+                message: "Successfully liked post",
+              });
+      
         }
 
     } catch (err) {
         console.log(err);
     } finally {
         const backURL = req.header('Referer') || '/';
-        res.redirect(backURL);
+        res.redirect(`${backURL}?${q}`);
     }
 }
 

@@ -53,7 +53,7 @@
     <%- include("./partials/update-post.ejs") %>
 
     <ul>
-        <% if (userPosts.length > 1) { %>
+        <% if (userPosts.length >= 1) { %>
         <% for(let i = 0; i < userPosts.length; i++) { %>
         <li class="postContainer" id="<%= userPosts[i]._id %>">
             <div class="postedByInfo">
