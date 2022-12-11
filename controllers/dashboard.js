@@ -40,7 +40,8 @@ async function getProfile(req, res) {
         locals = {
             userPosts,
             user: req.session.username,
-            userName: req.session.username
+            userName: req.session.username,
+            serverMessage: req.query
         };
 
     } catch (err) {
@@ -76,6 +77,7 @@ async function getDashboard(req, res) {
         locals = {
             publicPosts,
             user: req.session.name,
+            serverMessage: req.query
         };
 
     } catch (err) {
@@ -187,9 +189,8 @@ async function updatePost(req, res) {
     }
 }
 
-// flash-message when added comment! do i need it?!
 async function addComment(req, res) {
-   
+    let query = null;
     try {
         // get comment, post-id and who posted comment
         const {
@@ -219,13 +220,13 @@ async function addComment(req, res) {
                 "comments": commentDoc._id
             }
         });
-        req.flash('success', 'Successfully shared comment!');
+        query = new URLSearchParams({type: "success", message: "Successfully added comment!"});
     } catch (err) {
         console.log(err);
-        req.flash('error', 'Someting went wrong, try again.');
+        query = new URLSearchParams({type: "fail", message: "Something went wrong"});
     } finally {
-        const backURL = req.header('Referer') || '/';
-        res.redirect(backURL);
+        const qStr = query.toString();
+        res.redirect(`/dashboard?${qStr}`);
     }
 }
 

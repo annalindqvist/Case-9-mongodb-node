@@ -93,11 +93,7 @@
 
                 <div class="postLikeIcon ">
                     <i class="bi bi-heart" onclick="handleLike('<%= userPosts[i]._id %>')" id="likeBtn"></i>
-
-
-                    <% if (userPosts[i].likeCount >= 1) { %>
-                    <p class="postLikeCount"><%= userPosts[i].likeCount || "" %> </p>
-                    <% } %>
+                    <p class="postLikeCount" id="postLikeCount.<%= userPosts[i]._id %>"><%= userPosts[i].likeCount || "" %> </p>
                 </div>
                 <div class="postCommentIcon" onclick="handleComment('<%= userPosts[i]._id %>')">
                     <i class="bi bi-chat-right"></i>

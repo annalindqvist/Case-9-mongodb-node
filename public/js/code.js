@@ -242,19 +242,3 @@ function sharePost() {
         sharePostElement.style.display = "none";
     }
 }
-
-
-// .then((res) => {
-//     if (res.redirected) {
-
-//         // should be on backend 
-//         // if (document.getElementById("likeBtn").setAttribute('name', 'heart')) {
-//         //     document.getElementById("likeBtn").setAttribute('name', 'heart-outlined');
-//         // } else {
-//         //     document.getElementById("likeBtn").setAttribute('name', 'heart');
-//         // }
-
-
-//         window.location.href = res.url;
-//     }
-// })
