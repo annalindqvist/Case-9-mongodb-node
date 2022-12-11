@@ -16,24 +16,24 @@ async function getProfile(req, res) {
         const userPosts = await PostModel.find({
                 postedBy: Object(userId)
             })
-            .populate([
-                {
+            .populate([{
                     path: "postedBy",
                     select: "username"
                 },
                 {
-                path: "comments",
-                populate: {
-                    path: 'postedBy',
-                    model: 'User'
+                    path: "comments",
+                    populate: {
+                        path: 'postedBy',
+                        model: 'User'
+                    }
+                }, {
+                    path: "likes",
+                    populate: {
+                        path: 'likedBy',
+                        model: 'User'
+                    }
                 }
-            }, {
-                path: "likes",
-                populate: {
-                    path: 'likedBy',
-                    model: 'User'
-                }
-            }])
+            ])
             .exec();
 
 
@@ -141,11 +141,12 @@ async function deletePost(req, res) {
         type = 'error';
     } finally {
 
-    res.json({message: {
-        type,
-        feedback
-    }
-    });
+        res.json({
+            message: {
+                type,
+                feedback
+            }
+        });
     }
 }
 
@@ -177,17 +178,18 @@ async function updatePost(req, res) {
         type = 'error';
     } finally {
 
-        res.json({message: {
-            type,
-            feedback
-        }
-    });
+        res.json({
+            message: {
+                type,
+                feedback
+            }
+        });
     }
 }
 
 // flash-message when added comment! do i need it?!
 async function addComment(req, res) {
-
+   
     try {
         // get comment, post-id and who posted comment
         const {
@@ -228,34 +230,46 @@ async function addComment(req, res) {
 }
 
 async function likePost(req, res) {
-    let q = null;
+    //let q = null;
+    let feedback = {};
+    let type = {};
+    let like = {};
     try {
         // get comment, post-id and who posted comment
         const {
             id
         } = req.params;
-        const likedBy = req.session.userId;
-
+        const likedByUser = req.session.userId;
+        // find the post 
         const findPost = await PostModel.find({
                 "_id": id
             })
             .populate("likes")
             .exec()
-        const alreadyLike = findPost[0].likes.some(like => like.likedBy == likedBy);
-
+            
+  
+        const alreadyLike = findPost[0].likes.some(like => like.likedBy == likedByUser);
+        const findLikeId = findPost[0].likes.map(id => id.likedBy == likedByUser);
+        // json response?? 
         if (alreadyLike) {
-            const findLikeId = findPost[0].likes.map(id => id._id);
-            const likeId = findLikeId[0];
-
+            let likeId;
+            for (let i = 0; i < findLikeId.length; i++) {
+                if (findLikeId[i] == true){
+                    likeId = findPost[0].likes[i]._id;
+                };
+            };
             const dislike = await LikeModel.deleteOne({
                 _id: likeId,
             });
-
             if (dislike.deletedCount == 0) {
-                q = new URLSearchParams({
-                    type: "error",
-                    message: "No like was removed!",
-                  });
+                // q = new URLSearchParams({
+                //     type: "error",
+                //     message: "No like was removed!",
+                //   });
+                console.log("dislike", dislike)
+                feedback = 'No like was removed';
+                type = 'error';
+                like = 0;
             } else {
 
                 await PostModel.updateOne({
@@ -268,16 +282,19 @@ async function likePost(req, res) {
                         'likes': likeId
                     }
                 });
-                q = new URLSearchParams({
-                    type: "success",
-                    message: "Successfully disliked post",
-                  });
+                // q = new URLSearchParams({
+                //     type: "success",
+                //     message: "Successfully disliked post",
+                //   });
+                feedback = 'Your like was removed.';
+                type = 'success';
+                like = -1;
             }
 
         } else {
             const likeDoc = new LikeModel({
                 like: true,
-                likedBy,
+                likedBy: likedByUser,
                 post: id
             });
             await likeDoc.save();
@@ -294,18 +311,27 @@ async function likePost(req, res) {
                     }
                 }
             });
-            q = new URLSearchParams({
-                type: "success",
-                message: "Successfully liked post",
-              });
-      
+            // q = new URLSearchParams({
+            //     type: "success",
+            //     message: "Successfully liked post",
+            //   });
+            feedback = 'Successfully liked post';
+            type = 'success';
+            like = 1;
+
         }
 
     } catch (err) {
         console.log(err);
     } finally {
-        const backURL = req.header('Referer') || '/';
-        res.redirect(`${backURL}?${q}`);
+       
+        res.json({
+            message: {
+                type,
+                feedback,
+                like
+            }
+        });
     }
 }
 

@@ -123,20 +123,55 @@ function handleLike(id) {
                 "Content-Type": "application/json",
             },
         })
-        .then((res) => {
-            if (res.redirected) {
+        .then(response => response.json())
+            .then((data) => {
+                // add json response for visual feedback and add class for styling
+                document.getElementById("flash-message-feedback").innerText = data.message.feedback;
 
-                // should be on backend 
-                // if (document.getElementById("likeBtn").setAttribute('name', 'heart')) {
-                //     document.getElementById("likeBtn").setAttribute('name', 'heart-outlined');
-                // } else {
-                //     document.getElementById("likeBtn").setAttribute('name', 'heart');
-                // }
+                let element = document.getElementsByClassName("flash-message");
+                for (var i = 0; i < element.length; i++) {
+                    element[i].classList.add(data.message.type);
+                    element[i].classList.add("fadeout");
+                    element[i].style.display = "block";
+                }
+                console.log(data);
 
 
-                window.location.href = res.url;
-            }
-        })
+                // // update the post
+                let postLikeCount = document.getElementById(`postLikeCount.${id}`);
+
+
+                if(data.message.like == 1) {
+                    let num1 = parseInt(postLikeCount.innerText);
+                    if(isNaN(num1)|| num1 == null) {
+                        num1 = 0;
+                    }
+                    postLikeCount.innerText = num1 + 1;
+
+                } else if (data.message.like == -1) {
+                    let num1 = parseInt(postLikeCount.innerText);
+                    if(isNaN(num1) || num1 == null) {
+                        num1 = 0;
+                    }
+                   
+                    postLikeCount.innerText = num1 + -1;
+                    if (postLikeCount.innerText == 0) {
+                        postLikeCount.innerText = "";
+                    }
+                }
+                 else {
+                    let num1 = parseInt(postLikeCount.innerText);
+                    if(isNaN(num1) || num1 == null) {
+                        num1 = 0;
+                    }
+                   
+                    postLikeCount.innerText = num1;
+                } 
+                  
+               
+
+            })
+       
         .catch((err) => console.log(err));
 }
 
@@ -207,3 +242,19 @@ function sharePost() {
         sharePostElement.style.display = "none";
     }
 }
+
+
+// .then((res) => {
+//     if (res.redirected) {
+
+//         // should be on backend 
+//         // if (document.getElementById("likeBtn").setAttribute('name', 'heart')) {
+//         //     document.getElementById("likeBtn").setAttribute('name', 'heart-outlined');
+//         // } else {
+//         //     document.getElementById("likeBtn").setAttribute('name', 'heart');
+//         // }
+
+
+//         window.location.href = res.url;
+//     }
+// })
