@@ -113,9 +113,7 @@ async function addPost(req, res) {
         req.flash('error', err.message);
 
     } finally {
-
-        const backURL = req.header('Referer') || '/';
-        res.redirect(backURL);
+        res.redirect('dashboard');
     }
 }
 
@@ -248,7 +246,6 @@ async function likePost(req, res) {
             .populate("likes")
             .exec()
             
-  
         const alreadyLike = findPost[0].likes.some(like => like.likedBy == likedByUser);
         const findLikeId = findPost[0].likes.map(id => id.likedBy == likedByUser);
         // json response?? 

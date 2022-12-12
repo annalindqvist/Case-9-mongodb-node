@@ -302,6 +302,9 @@ input {
     margin-top: 0.5rem;
     border-bottom: 1px solid #474747;
 }
+#profileInfo div {
+    margin-bottom: 0.5rem;
+}
 
 /* DASHBOARD */
 

@@ -1,9 +1,11 @@
 import UserModel from "../models/user.js";
 
 async function getSignIn(req, res) {
-    res.render("start", {
+    let locals = {
         serverMessage: req.query
-    });
+    };
+    console.log("locals", locals, "req.query", req.query)
+    res.render("start", locals);
 }
 
 async function getSignUp(req, res) {
@@ -13,18 +15,18 @@ async function getSignUp(req, res) {
 }
 
 async function signOutUser(req, res) {
+    let query = null;
     try {
-        // FLASH FUNKAR INTE, but why?
-        req.flash('success', 'Successfully logged out!')
+        query = new URLSearchParams({type: "success", message: "Successfully logged out!"});
         req.session.destroy();
         
     } catch (err) {
         console.log(err)
-        // FLASH FUNKAR INTE, but why?
-        req.flash('error', 'Failed to logged out')
-        
+        query = new URLSearchParams({type: "error", message: "Something went wrong"});
     } finally {
-        res.redirect('/start');
+        const qStr = query.toString();
+        res.redirect(`/?${qStr}`);
+        
     }
 }
 

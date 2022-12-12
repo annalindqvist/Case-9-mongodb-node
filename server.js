@@ -44,11 +44,6 @@ app.use((req, res, next) => {
     next();
 })
 
-
-app.get('/', function (req, res) {
-    res.render('start');
-});
-
 // ---- ACCESS PUBLIC FOLDER
 app.use(express.static('./public'));
 
