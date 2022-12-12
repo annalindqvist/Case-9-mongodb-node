@@ -6,7 +6,7 @@
 
 - A simple application where you have the opportunity to share posts if you have created a account. You can share public or private posts, leave a like or comment on all public posts. On your profile you find all of your shared posts, both public and private ones. Here you also have the possibility to edit or remove your post!
 
-###### At the moment when you like a post the heart doesn't change from outlined to filled but you get the feedback in a message that pops up and the number of likes actually changes.
+
 <br>
 <br>
 When creating an accout you need to enter your name, userneme, email, password and password again. The password get hashed with bcrypt. 
