@@ -31,8 +31,6 @@ async function signOutUser(req, res) {
 }
 
 async function addUser(req, res) {
-
-    // default endpoint is sign-in page/login/startpage if no erore occurs then stay on sign-up page
     let url = '';
     try {
         const {
@@ -48,19 +46,19 @@ async function addUser(req, res) {
             username
         });
 
-        // if username is alreasy taken therow error
+        // if username is alreasy taken throw error
         if (userExists) {
             url = 'sign-up';
             throw new Error('username is already taken');
 
         } else {
-            // if password-fields doesnt match theow error
+            // if password-fields doesnt match throw error
             if (password !== passwordAgain) {
                 url = 'sign-up';
                 throw new Error("Passwords doesn't match");
             } else {
 
-                // create user document instance locally - should it be named userDoc ? in db it says document..?
+                // create user document instance locally
                 const user = new UserModel({
                     name,
                     username,

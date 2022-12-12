@@ -7,11 +7,12 @@ import {
 
 async function getProfile(req, res) {
     let locals = {};
-
     try {
         const {
             userId
         } = req.session;
+
+        // find posts shared by the user who is logged in
         const userPosts = await PostModel.find({
                 postedBy: Object(userId)
             })
@@ -48,16 +49,14 @@ async function getProfile(req, res) {
 
     } finally {
         res.render("profile", locals);
-
     }
 }
 
 
 async function getDashboard(req, res) {
     let locals = {};
-
     try {
-        // check this one.. populates everything on the user.. 
+        // find posts shared as public
         const publicPosts = await PostModel.find({
                 visibility: "public"
             })
@@ -87,7 +86,6 @@ async function getDashboard(req, res) {
 }
 
 async function addPost(req, res) {
-
     try {
         const {
             post,
@@ -104,11 +102,9 @@ async function addPost(req, res) {
             postedBy
         })
         await postDoc.save();
-
         req.flash('success', 'Successfully shared post!');
 
     } catch (err) {
-
         req.flash('error', err.message);
 
     } finally {
@@ -123,8 +119,6 @@ async function deletePost(req, res) {
         const {
             id
         } = req.params;
-
-        // check if user who posted this is same as the one trying to delete post samt with edit and add..?
 
         const deletedPost = await PostModel.deleteOne({
             _id: id
@@ -204,9 +198,9 @@ async function addComment(req, res) {
             postedBy,
             post: id
         });
-        // save comment do db - ... yes or no? 
+        // save comment do db 
         await commentDoc.save();
-        // push to post-comment-array ... yes or no?
+        // push commentID to post-comment-array
         await PostModel.findOneAndUpdate({
             _id: ObjectId(id)
         }, {
@@ -232,7 +226,7 @@ async function likePost(req, res) {
     let type = {};
     let like = {};
     try {
-        // get comment, post-id and who posted comment
+        // get post-id and who posted comment
         const {
             id
         } = req.params;
@@ -243,17 +237,22 @@ async function likePost(req, res) {
             })
             .populate("likes")
             .exec()
-            
+        // alreadyLike returns true or false
+        // true if user already liked the post
+        // false if the user has not liked the post
         const alreadyLike = findPost[0].likes.some(like => like.likedBy == likedByUser);
-        const findLikeId = findPost[0].likes.map(id => id.likedBy == likedByUser);
 
         if (alreadyLike) {
+            // returns an array containting true or false values
+            const findLikeId = findPost[0].likes.map(id => id.likedBy == likedByUser);
+            // using findLikeId array to catch the index of the likeID in likeCollection
             let likeId;
             for (let i = 0; i < findLikeId.length; i++) {
                 if (findLikeId[i] == true){
                     likeId = findPost[0].likes[i]._id;
                 };
             };
+            // remove the like from likeCollection
             const dislike = await LikeModel.deleteOne({
                 _id: likeId,
             });
@@ -262,7 +261,7 @@ async function likePost(req, res) {
                 type = 'error';
                 like = 0;
             } else {
-
+                // remove the likeID from the post and remove one from likeCount
                 await PostModel.updateOne({
                     _id: ObjectId(id)
                 }, {
@@ -279,13 +278,14 @@ async function likePost(req, res) {
             }
 
         } else {
+            // add one like
             const likeDoc = new LikeModel({
                 like: true,
                 likedBy: likedByUser,
                 post: id
             });
             await likeDoc.save();
-
+            // add to post aswell and increase the number of likes
             await PostModel.updateOne({
                 _id: ObjectId(id)
             }, {
