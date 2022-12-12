@@ -17,103 +17,107 @@
 
     <!-- include bottom-menu -->
     <%- include("./partials/bottom-menu.ejs") %>
+    <main>
 
-    <div>
-        <h1 class="topLogo">TWETA</h1>
-    </div>
 
-     <!-- i -->
-    <% if (serverMessage) { %>
-      
+
+        <div>
+            <h1 class="topLogo">TWETA</h1>
+        </div>
+
+        <!-- i -->
+        <% if (serverMessage) { %>
+
         <div class="flash-message <%= serverMessage.type %> fadeout">
             <p><%= serverMessage.message %></p>
         </div>
-      <% } %> 
-
-    <!--  -->
-    <% if (locals.flash) { %>
-    <% Object.keys(flash).forEach((key) => { %> <%
-                flash[key].forEach((message) => { %>
-    <div class="flash-message <%= key %> fadeout">
-        <p><%= message %></p>
-    </div>
-    <% }) %> <% }) %>
-    <% } %>
-
-    <div class="flash-message-json">
-        <p id="flash-message-feedback"></p>
-    </div>
-
-    <div id="dashboardInfo">
-        <h2>Hey <%= user %>, read the latest on Tweta!</h2>
-    </div>
-
-
-    <%- include("./partials/share-post.ejs") %>
-
-    <ul>
-        <% for(let i = 0; i < publicPosts.length; i++) { %>
-        <li class="postContainer">
-            <div class="postedByInfo">
-                <div class="profilePic"></div>
-                <div class="postedBy">
-                    <p class="postedByName"> <%= publicPosts[i].name || "Unknown" %></p>
-                    <div class="postedByUsernameTime grey">
-                        <p class="postedByUsername grey">@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></p>
-                        <p class="grey">•</p>
-                        <time class="grey" datetime="<%= publicPosts[i]?.createdAt%>"></time>
-                    </div>
-
-                </div>
-            </div>
-            <div>
-                <p class="postContent"><%= publicPosts[i].post %></p>
-            </div>
-
-            <div class="likesAndComment displayFlex">
-                <div class="postLikeIcon displayFlex">
-                    <i class="bi bi-heart" onclick="handleLike('<%= publicPosts[i]._id %>')"></i>
-                    <p class="postLikeCount" id="postLikeCount.<%= publicPosts[i]._id %>"><%= publicPosts[i].likeCount || "" %> </p>
-                </div>
-                <div class="postCommentIcon displayFlex" onclick="handleComment('<%= publicPosts[i]._id %>')">
-                    <i class="bi bi-chat-right"></i>
-                    <% if (publicPosts[i].commentCount >= 1) { %>
-                    <p class="postLikeCount"><%= publicPosts[i].commentCount || "" %> </p>
-                    <% } %>
-                </div>
-            </div>
-            <div class="postComments">
-
-                <%  publicPosts[i].comments.forEach(comment => { %>
-                <div class="comment">
-                    <div class="commentPostedBy displayFlex">
-                        <p class="postedByName"> <%= comment.postedBy.name || "Unknown" %> </p>
-                        <p class="postedByUsername grey"> @<%= comment.postedBy.username || "Unknown" %> </p>
-                        <p class="grey">•</p>
-                        <time class="grey" datetime="<%= comment.createdAt%>"></time>
-                    </div>
-                    <div class="commentContent">
-                        <p> <%= comment.comment || "Failed to display comment" %> </p>
-                    </div>
-                </div>
-                <%  }); %>
-                <div>
-                    <form id="comment-form.<%=publicPosts[i]._id %>" class="comment-form">
-                        <div>
-
-                            <input type="text" name="comment" id="comment" placeholder="@<%= user %>">
-                            <button type="submit"><i class="bi bi-send"></i></button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-
-        </li>
-
         <% } %>
-    </ul>
 
+        <!--  -->
+        <% if (locals.flash) { %>
+        <% Object.keys(flash).forEach((key) => { %> <%
+                flash[key].forEach((message) => { %>
+        <div class="flash-message <%= key %> fadeout">
+            <p><%= message %></p>
+        </div>
+        <% }) %> <% }) %>
+        <% } %>
+
+        <div class="flash-message-json">
+            <p id="flash-message-feedback"></p>
+        </div>
+
+        <div id="dashboardInfo">
+            <h2>Hey <%= user %>, read the latest on Tweta!</h2>
+        </div>
+
+
+        <%- include("./partials/share-post.ejs") %>
+
+        <ul>
+            <% for(let i = 0; i < publicPosts.length; i++) { %>
+            <li class="postContainer">
+                <div class="postedByInfo">
+                    <div class="profilePic"></div>
+                    <div class="postedBy">
+                        <p class="postedByName"> <%= publicPosts[i].name || "Unknown" %></p>
+                        <div class="postedByUsernameTime grey">
+                            <p class="postedByUsername grey">@<%= publicPosts[i]?.postedBy?.username || "Unknown" %></p>
+                            <p class="grey">•</p>
+                            <time class="grey" datetime="<%= publicPosts[i]?.createdAt%>"></time>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <p class="postContent"><%= publicPosts[i].post %></p>
+                </div>
+
+                <div class="likesAndComment displayFlex">
+                    <div class="postLikeIcon displayFlex">
+                        <i class="bi bi-heart" onclick="handleLike('<%= publicPosts[i]._id %>')"></i>
+                        <p class="postLikeCount" id="postLikeCount.<%= publicPosts[i]._id %>">
+                            <%= publicPosts[i].likeCount || "" %> </p>
+                    </div>
+                    <div class="postCommentIcon displayFlex" onclick="handleComment('<%= publicPosts[i]._id %>')">
+                        <i class="bi bi-chat-right"></i>
+                        <% if (publicPosts[i].commentCount >= 1) { %>
+                        <p class="postLikeCount"><%= publicPosts[i].commentCount || "" %> </p>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="postComments">
+
+                    <%  publicPosts[i].comments.forEach(comment => { %>
+                    <div class="comment">
+                        <div class="commentPostedBy displayFlex">
+                            <p class="postedByName"> <%= comment.postedBy.name || "Unknown" %> </p>
+                            <p class="postedByUsername grey"> @<%= comment.postedBy.username || "Unknown" %> </p>
+                            <p class="grey">•</p>
+                            <time class="grey" datetime="<%= comment.createdAt%>"></time>
+                        </div>
+                        <div class="commentContent">
+                            <p> <%= comment.comment || "Failed to display comment" %> </p>
+                        </div>
+                    </div>
+                    <%  }); %>
+                    <div>
+                        <form id="comment-form.<%=publicPosts[i]._id %>" class="comment-form">
+                            <div>
+
+                                <input type="text" name="comment" id="comment" placeholder="@<%= user %>">
+                                <button type="submit"><i class="bi bi-send"></i></button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </li>
+
+            <% } %>
+        </ul>
+    </main>
 
     <script src="/js/code.js"></script>
 
