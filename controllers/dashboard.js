@@ -62,20 +62,28 @@ async function getDashboard(req, res) {
             .populate([{
                 path: "postedBy",
                 select: "username"
-            }, {
+            },  {
                 path: "comments",
                 populate: {
                     path: 'postedBy',
                     model: 'User'
                 }
-            }])
+            }, {
+                path: "likes",
+                populate: {
+                    path: 'likedBy',
+                    model: 'User'
+                }
+            }
+            ])
             .exec();
 
-        console.log("publicPosts", publicPosts)
+       
 
         locals = {
             publicPosts,
             user: req.session.name,
+            userName: req.session.username,
             serverMessage: req.query
         };
 
