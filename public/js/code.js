@@ -139,6 +139,7 @@ function handleLike(id) {
 
                 // // update the post
                 let postLikeCount = document.getElementById(`postLikeCount.${id}`);
+                let likeBtn = document.getElementById(`likeBtn.${id}`);
 
                 if(data.message.like == 1) {
                     let num1 = parseInt(postLikeCount.innerText);
@@ -146,6 +147,7 @@ function handleLike(id) {
                         num1 = 0;
                     }
                     postLikeCount.innerText = num1 + 1;
+                    likeBtn.classList.replace("bi-heart", "bi-heart-fill");
 
                 } else if (data.message.like == -1) {
                     let num1 = parseInt(postLikeCount.innerText);
@@ -157,6 +159,8 @@ function handleLike(id) {
                     if (postLikeCount.innerText == 0) {
                         postLikeCount.innerText = "";
                     }
+
+                    likeBtn.classList.replace("bi-heart-fill", "bi-heart");
                 }
                  else {
                     let num1 = parseInt(postLikeCount.innerText);

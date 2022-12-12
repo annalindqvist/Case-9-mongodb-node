@@ -98,9 +98,9 @@
                     <div class="postLikeIcon ">
                         <%  let likedOrNot = userPosts[i].likes.find(like =>  like.likedBy.username == userName)  %>
                             <% if (likedOrNot == undefined) { %>
-                                 <i class="bi bi-heart" onclick="handleLike('<%= userPosts[i]._id %>')"></i> 
+                                 <i class="bi bi-heart" id="likeBtn.<%= userPosts[i]._id %>" onclick="handleLike('<%= userPosts[i]._id %>')"></i> 
                                  <% } else { %>
-                                <i class="bi bi-heart-fill" onclick="handleLike('<%= userPosts[i]._id %>')"></i>
+                                <i class="bi bi-heart-fill" id="likeBtn.<%= userPosts[i]._id %>" onclick="handleLike('<%= userPosts[i]._id %>')"></i>
                             <% } %>
                         <p class="postLikeCount" id="postLikeCount.<%= userPosts[i]._id %>">
                             <%= userPosts[i].likeCount || "" %> </p>
