@@ -125,7 +125,7 @@ async function signInUser(req, res) {
 
     } catch (err) {
         // if error - create flash message 
-        req.flash('Error', err.message)
+        req.flash('error', err.message)
         url = '';
     } finally {
         // redirect to url that has been declared - if no errors / dashboard,  if errors /sign-in

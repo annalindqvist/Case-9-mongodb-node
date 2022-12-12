@@ -5,7 +5,6 @@ import {
     ObjectId
 } from "mongodb";
 
-
 async function getProfile(req, res) {
     let locals = {};
 
@@ -229,7 +228,6 @@ async function addComment(req, res) {
 }
 
 async function likePost(req, res) {
-    //let q = null;
     let feedback = {};
     let type = {};
     let like = {};
@@ -248,7 +246,7 @@ async function likePost(req, res) {
             
         const alreadyLike = findPost[0].likes.some(like => like.likedBy == likedByUser);
         const findLikeId = findPost[0].likes.map(id => id.likedBy == likedByUser);
-        // json response?? 
+
         if (alreadyLike) {
             let likeId;
             for (let i = 0; i < findLikeId.length; i++) {
@@ -260,11 +258,6 @@ async function likePost(req, res) {
                 _id: likeId,
             });
             if (dislike.deletedCount == 0) {
-                // q = new URLSearchParams({
-                //     type: "error",
-                //     message: "No like was removed!",
-                //   });
-                console.log("dislike", dislike)
                 feedback = 'No like was removed';
                 type = 'error';
                 like = 0;
@@ -280,10 +273,6 @@ async function likePost(req, res) {
                         'likes': likeId
                     }
                 });
-                // q = new URLSearchParams({
-                //     type: "success",
-                //     message: "Successfully disliked post",
-                //   });
                 feedback = 'Your like was removed.';
                 type = 'success';
                 like = -1;
@@ -309,14 +298,9 @@ async function likePost(req, res) {
                     }
                 }
             });
-            // q = new URLSearchParams({
-            //     type: "success",
-            //     message: "Successfully liked post",
-            //   });
             feedback = 'Successfully liked post';
             type = 'success';
             like = 1;
-
         }
 
     } catch (err) {

@@ -42,7 +42,7 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.flash = req.flash();
     next();
-})
+});
 
 // ---- ACCESS PUBLIC FOLDER
 app.use(express.static('./public'));

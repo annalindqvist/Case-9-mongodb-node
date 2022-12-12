@@ -117,7 +117,7 @@ h2 {
    font-weight: 600;
 }
 
-.topLogo {
+.topLogo, .logo {
     position: fixed;
     top: 1.5rem;
     left: 50%;
@@ -162,8 +162,6 @@ li {
     list-style-type: none;
     transform: rotate(-180deg);
     margin-bottom: 1.3rem;
-    
-
 }
 
 nav {
@@ -177,7 +175,6 @@ nav {
     justify-content: space-evenly;
     align-items: center;
     z-index: 9999;
-
 }
 
 nav .bi {
