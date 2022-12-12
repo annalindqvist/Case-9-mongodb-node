@@ -1,5 +1,7 @@
 # Case-9-mongodb-node
 
+###### School project with Node.js, express, MongoDB, Mongoose and EJS
+
 ## "Tweet-applikation"
 
 - A simple application where you have the opportunity to share posts if you have created a account. You can share public or private posts, leave a like or comment on all public posts. On your profile you find all of your shared posts, both public and private ones. Here you also have the possibility to edit or remove your post!
@@ -58,4 +60,6 @@ When saving the edit this message pops up. Also when adding new post, deleting p
 2. In VSC terminal type: "git clone https://github.com/annalindqvist/Case-9-mongodb-node.git" and press enter
 3. CD into projekt "cd Case-9-mongodb-node"
 4. Run "npm install" in terminal
-5. To run project on your localhost:3000 type "npm run dev" in terminal
+5. Create a .env file with the same content as in .env-example
+- 5.1: if you don't have an accout on Mongo DB you need to create one and after that create a database so you get the MongoDB Connection string
+6. To run project on your localhost:3000 type "npm run dev" in terminal

@@ -128,18 +128,17 @@ function handleLike(id) {
                 // add json response for visual feedback and add class for styling
                 document.getElementById("flash-message-feedback").innerText = data.message.feedback;
 
-                let element = document.getElementsByClassName("flash-message");
+                let element = document.querySelectorAll(".flash-message-json");
+                console.log("element", element)
+                
                 for (var i = 0; i < element.length; i++) {
+                    element[i].style.display = "block";
                     element[i].classList.add(data.message.type);
                     element[i].classList.add("fadeout");
-                    element[i].style.display = "block";
                 }
-                console.log(data);
-
 
                 // // update the post
                 let postLikeCount = document.getElementById(`postLikeCount.${id}`);
-
 
                 if(data.message.like == 1) {
                     let num1 = parseInt(postLikeCount.innerText);

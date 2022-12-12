@@ -22,13 +22,15 @@
         <h1 class="topLogo">TWETA</h1>
     </div>
 
+     <!-- i -->
     <% if (serverMessage) { %>
       
-        <div class="flash-message <%= serverMessage.type %> %> animate__fadeInDown fadeout">
+        <div class="flash-message <%= serverMessage.type %> fadeout">
             <p><%= serverMessage.message %></p>
         </div>
       <% } %> 
 
+    <!--  -->
     <% if (locals.flash) { %>
     <% Object.keys(flash).forEach((key) => { %> <%
                 flash[key].forEach((message) => { %>
@@ -38,9 +40,7 @@
     <% }) %> <% }) %>
     <% } %>
 
-   
-
-    <div class="flash-message animate__fadeInDown">
+    <div class="flash-message-json">
         <p id="flash-message-feedback"></p>
     </div>
 
